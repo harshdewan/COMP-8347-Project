@@ -3,6 +3,8 @@
 **COMP-8347-Internet Applications and Distributed Systems Project**
 
 **Title: Green Conscious**
+
+
 **Description:**
 Creating a website where people can host details for the events related to green technologies and ask for volunteers, network with people and promote sustainability through discussions.
 Primary use is for someone who wants to contribute and wants to check what events/projects/workshops are organised where one can contribute as per interest.
