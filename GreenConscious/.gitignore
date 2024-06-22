@@ -1,0 +1,92 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+bin/
+lib/
+lib64/
+include/
+# If using Pipenv
+Pipfile.lock
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.mo
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+
+# If using Django migrations
+migrations/
+
+# If using Django Compressor
+compressed/
+
+# If using SQLite
+*.sqlite3
+
+# Local env files
+.env
+*.env
+
+# dotenv
+.env.local
+.env.*.local
+
+# pyenv
+.python-version
+
+# Django stuff:
+*.pot
+*.log
+local_settings.py
+db.sqlite3
+
+# Media and static files
+media/
+staticfiles/
+
+# If using Jupyter Notebook
+.ipynb_checkpoints
+
+# If using macOS
+.DS_Store
+
+# If using Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# If using Visual Studio Code
+.vscode/
+*.code-workspace
+
+# If using PyCharm
+.idea/
+
+# If using IntelliJ IDEA
+*.iml
+.idea/
+
+# Specific files in the .idea directory
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/GreenConscious.iml
+.idea/misc.xml
