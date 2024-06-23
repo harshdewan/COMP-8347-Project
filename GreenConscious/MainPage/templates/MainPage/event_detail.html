@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Event Details{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'MainPage/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ event.name }}</h2>
+    <p><strong>Start Date:</strong> {{ event.start_date }}</p>
+    <p><strong>End Date:</strong> {{ event.end_date }}</p>
+    <p><strong>Description:</strong> {{ event.description }}</p>
+    {% if event.image %}
+        <img src="{{ event.image.url }}" alt="{{ event.name }}" class="event-image">
+    {% endif %}
+    <p><strong>Location:</strong> {{ event.location }}</p>
+    <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
+    <a href="{% url 'MainPage:main_page' %}">Back to Events</a>
+</div>
+{% endblock %}

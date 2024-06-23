@@ -21,5 +21,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('main_page/', include('MainPage.urls')),  # Include MainPage URLs
+    path('main_page/', include('MainPage.urls')),  # Ensure the MainPage URLs are included
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
