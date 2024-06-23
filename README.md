@@ -16,3 +16,7 @@ Primary use is for someone who wants to contribute and wants to check what event
 3. User registration and Sign In
 4. Volunteer Matching (to match volunteers based on their skills, interests, and availability)
 5. Community Engagement (Short forums for discussion and to exchange ideas)
+
+**Init:**
+run this to install required packages
+pip install -r requirements.txt
