@@ -6,7 +6,7 @@ def main_page(request):
     events_list = Event.objects.all()
 
     # Paginator settings
-    paginator = Paginator(events_list, 2)  # Show 10 events per page
+    paginator = Paginator(events_list, 5)  # Show 10 events per page
 
     page = request.GET.get('page')
     try:
