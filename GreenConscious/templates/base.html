@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+            Green Conscious
+        {% endblock %}
+    </title>
+
+    <!-- Link CSS file -->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+    <!-- Block for additional CSS files -->
+    {% block extra_css %}{% endblock %}
+    {% block extra_js %}{% endblock %}
+
+</head>
+
+<body>
+<!-- Navbar -->
+<div class="navbar">
+    <a href="{% url 'MainPage:main_page' %}">
+        <div class="name">Green Conscious</div>
+    </a>
+    <div class="login-register">
+        <a href="{% url 'MainPage:main_page' %}">
+            <button>Log In</button>
+        </a>
+        <a href="{% url 'MainPage:main_page' %}">
+            <button>Sign Up</button>
+        </a>
+    </div>
+</div>
+
+<!-- Content area -->
+<div class="content">
+    {% block content %}
+        Replace Content Here
+    {% endblock %}
+</div>
+
+</body>
+</html>
