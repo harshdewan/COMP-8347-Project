@@ -1,0 +1,84 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+h1 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.event {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.event h2 {
+    margin: 0 0 10px;
+    font-size: 24px;
+    color: #333;
+}
+
+.event p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.event strong {
+    color: #333;
+}
+
+.event img {
+    border-radius: 8px;
+    margin-top: 10px;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Pagination styles */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination .step-links {
+    display: inline-block;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+}
+
+.pagination .step-links a {
+    color: #4CAF50;
+    text-decoration: none;
+    padding: 4px 8px;
+    margin: 0 2px;
+}
+
+.pagination .step-links .current {
+    font-weight: bold;
+    padding: 4px 8px;
+    margin: 0 2px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.pagination .step-links a:hover,
+.pagination .step-links .current:hover {
+    background-color: #4CAF50;
+    color: white;
+}

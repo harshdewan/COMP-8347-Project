@@ -1,12 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <div>
-        Main Page
+{% extends 'base.html' %}
+
+{% block title %}Your Dashboard{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'MainPage/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% for event in events %}
+            <div class="event">
+                <h2>{{ event.name }}</h2>
+                <p><strong>Start Date:</strong> {{ event.start_date }}</p>
+                <p><strong>End Date:</strong> {{ event.end_date }}</p>
+                <p><strong>Description:</strong> {{ event.description }}</p>
+                {% if event.image %}
+                    <img src="{{ event.image.url }}" alt="{{ event.name }}">
+                {% endif %}
+                <p><strong>Location:</strong> {{ event.location }}</p>
+                <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
+            </div>
+        {% endfor %}
+
+        <!-- Pagination links -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if events.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ events.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ events.number }} of {{ events.paginator.num_pages }}.
+                </span>
+
+                {% if events.has_next %}
+                    <a href="?page={{ events.next_page_number }}">next</a>
+                    <a href="?page={{ events.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
-</body>
-</html>
+{% endblock %}

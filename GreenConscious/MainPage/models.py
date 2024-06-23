@@ -9,6 +9,8 @@ class Event(models.Model):
     end_date = models.DateField()
     description = models.TextField()
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    image = models.ImageField(upload_to='event_images/', null=True, blank=True)  # New field for event image
+    location = models.CharField(max_length=255, null=True, blank=True)  # Optional field for location
 
     def __str__(self):
         return self.name
