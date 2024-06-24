@@ -91,3 +91,18 @@ h1 {
     display: block;
     margin: 0 auto;
 }
+
+.container {
+    display: flex;
+}
+.sidebar {
+    width: 200px;
+    margin-right: 20px;
+}
+.content {
+    flex-grow: 1;
+}
+.event img {
+    max-width: 100%;
+    height: auto;
+}
