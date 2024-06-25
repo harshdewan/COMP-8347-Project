@@ -5,7 +5,34 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'MainPage/style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'MainPage/style.css' %}">
+<style>
+    .event-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    .back-button {
+        display: inline-block;
+        margin-top: 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 5px;
+        transition-duration: 0.4s;
+    }
+    .back-button:hover {
+        background-color: white;
+        color: #4CAF50;
+        border: 2px solid #4CAF50;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -19,6 +46,6 @@
     {% endif %}
     <p><strong>Location:</strong> {{ event.location }}</p>
     <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
-    <a href="{% url 'MainPage:main_page' %}">Back to Events</a>
+    <a href="{% url 'MainPage:main_page' %}" class="btn btn-primary back-button">Back to Events</a>
 </div>
 {% endblock %}
