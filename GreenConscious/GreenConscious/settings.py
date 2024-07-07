@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'UserProfile.apps.UserprofileConfig',
     'MainPage.apps.MainPageConfig',
+    "Login_SignUp.apps.LoginSignupConfig"
 ]
 
 MIDDLEWARE = [
