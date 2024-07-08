@@ -19,7 +19,7 @@
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-.eventName_field{
+.input_field{
     margin-right: 10px;
     height: calc(1.5em + .75rem + 2px);
     padding: .375rem .75rem;

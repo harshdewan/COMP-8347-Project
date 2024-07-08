@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Event Creation{% endblock %}
+{% block title %}Event Registration{% endblock %}
 
 {% load static %}
 
@@ -12,10 +12,10 @@
     <div class="container-fluid">
         <div class="content">
             <div class="heading">Event Creation</div>
-            <form action="{% url 'EventsPage:event_creation' %}" method="post">
+            <form action="{% url 'EventsPage:event_registration' event_id %}" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button>Create Event</button>
+                <button>Register for this Event</button>
             </form>
         </div>
     </div>

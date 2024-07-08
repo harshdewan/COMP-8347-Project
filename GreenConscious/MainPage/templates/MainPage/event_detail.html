@@ -46,6 +46,10 @@
     {% endif %}
     <p><strong>Location:</strong> {{ event.location }}</p>
     <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
-    <a href="{% url 'MainPage:main_page' %}" class="btn btn-primary back-button">Back to Events</a>
+    <div>
+        <a href="{% url 'MainPage:main_page' %}" class="btn btn-primary back-button">Back to Events</a>
+        <a href="{% url 'EventsPage:event_registration' event.id %}" class="btn btn-primary back-button"
+        style="margin-left: 10px">Register</a>
+    </div>
 </div>
 {% endblock %}

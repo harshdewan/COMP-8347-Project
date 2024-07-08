@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from .forms import EventCreationForm
+from .forms import EventCreationForm, EventRegistrationForm
 from django.http import HttpResponse
 from MainPage.models import Event
+from .models import EventRegistration
+
 
 # Create your views here.
 def event_creation(request):
@@ -20,7 +22,31 @@ def event_creation(request):
                       description=event_description,
                       created_by=request.user)
             e.save()
-            return render(request, template_name='MainPage/main_page.html', context={'event': e})
+
+            return redirect(to='MainPage:main_page')
         else:
             return HttpResponse('Invalid Data')
     return render(request, 'event_creation.html', {'form': EventCreationForm})
+
+
+def event_registration(request, event_id):
+    if request.method == 'POST':
+        form = EventRegistrationForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            phone = form.cleaned_data['phone_no']
+
+            er = EventRegistration(eventId=event_id,
+                                   user_id=request.user,
+                                   name=name,
+                                   email=email,
+                                   phone_number=phone)
+            er.save()
+
+            return redirect(to='MainPage:main_page')
+        else:
+            print(form.errors)
+            return HttpResponse('Invalid Data')
+    return render(request, 'event_registration.html', {'form': EventRegistrationForm,
+                                                       'event_id': event_id})
