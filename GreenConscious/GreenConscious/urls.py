@@ -19,7 +19,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-urlpatterns = [
+urlpatterns = ([
     path('admin/', admin.site.urls),
     path('main_page/', include('MainPage.urls')),  # Ensure the MainPage URLs are included
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('users/', include('Login_SignUp.urls'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
