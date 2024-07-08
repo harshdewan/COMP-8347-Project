@@ -5,14 +5,14 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'Events/styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 {% endblock %}
 
 {% block content %}
     <div class="container-fluid">
         <div class="content">
             <div class="heading">Event Creation</div>
-            <form action="{% url 'MainPage:event_creation' %}" method="post">
+            <form action="{% url 'EventsPage:event_creation' %}" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button>Create Event</button>
