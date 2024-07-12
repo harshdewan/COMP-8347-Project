@@ -55,6 +55,14 @@
         </ul>
     </div>
     <div class="content">
+        <form method="get" action="{% url 'MainPage:main_page' %}" class="search-form">
+            <input type="text" name="q" class="input_field"
+                   value="{% if query %}{{ query }}{% endif %}" placeholder="Enter Name or Date Mon. DD, YYYY">
+            <div>
+                <button class="search_button text-center" type="submit">Search</button>
+            </div>
+        </form>
+
         {% for event in events %}
             <div class="event">
                 <h2><a href="{% url 'MainPage:event_detail' event.id %}">{{ event.name }}</a></h2>
