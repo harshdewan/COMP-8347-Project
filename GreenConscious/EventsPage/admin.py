@@ -6,4 +6,4 @@ from .models import EventRegistration
 
 @admin.register(EventRegistration)
 class EventRegistrationAdmin(admin.ModelAdmin):
-    list_display = ('eventId', 'user_id', 'name', 'email', 'phone_number')
+    list_display = ('event', 'user', 'name', 'email', 'phone_number')

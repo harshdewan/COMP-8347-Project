@@ -1,12 +1,14 @@
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
+from MainPage.models import Event
 
 
 # Create your models here.
 class EventRegistration(models.Model):
-    eventId = models.IntegerField()
-    user_id = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    # eventId = models.IntegerField()
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=100, blank=True, null=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
