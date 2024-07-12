@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from .forms import EventCreationForm, EventRegistrationForm
@@ -33,12 +34,14 @@ def event_registration(request, event_id):
     if request.method == 'POST':
         form = EventRegistrationForm(request.POST)
         if form.is_valid():
+            #print(request.event.id)
+            print(event_id)
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             phone = form.cleaned_data['phone_no']
-
-            er = EventRegistration(eventId=event_id,
-                                   user_id=request.user,
+            event_obj = Event.objects.filter(id=event_id).first()
+            er = EventRegistration(event_id=event_id,
+                                   user=request.user,
                                    name=name,
                                    email=email,
                                    phone_number=phone)
