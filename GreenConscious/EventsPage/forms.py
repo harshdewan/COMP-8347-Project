@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 
 class EventCreationForm(forms.Form):
@@ -16,11 +18,33 @@ class EventCreationForm(forms.Form):
     end_date = forms.DateField(required=True,
                                label='Event End Date',
                                widget=forms.SelectDateWidget(attrs={'class': 'dateTime_field', }))
-    event_time = forms.TimeField(required=True,
-                                 label='Event Time',
-                                 widget=forms.TimeInput(format='%H:%M', attrs={'class': 'dateTime_field',
-                                                                               'type': 'time',
-                                                                               'placeholder': 'HH:MM'}))
+
+    image = forms.ImageField(required=False,
+                             label='Event Image',
+                             widget=forms.ClearableFileInput(attrs={'class': 'form-control',}))
+
+    location = forms.CharField(required=True,
+                               label='Event Location',
+                               widget=forms.TextInput(attrs={'class': 'input_field',
+                                                             'placeholder': 'Please enter location'}))
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+
+        if start_date and end_date:
+            if end_date < start_date:
+                raise ValidationError({'end_date': 'End date cannot be before start date.'})
+
+            today = timezone.now().date()
+            if start_date < today:
+                raise ValidationError({'start_date': 'Start date cannot be in the past.'})
+            if end_date < today:
+                raise ValidationError({'end_date': 'End date cannot be in the past.'})
+
+        return cleaned_data
 
 
 class EventRegistrationForm(forms.Form):
