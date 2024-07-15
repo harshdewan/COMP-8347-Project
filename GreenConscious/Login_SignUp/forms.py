@@ -7,9 +7,9 @@ from django import forms
 from django.contrib.auth.models import User
 
 
-
 class signupForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), label='Password', max_length=10)
+
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
@@ -33,3 +33,9 @@ class profileForm(forms.Form):
     userLastName = forms.CharField(max_length=50, label="Last Name")
     userCity = forms.CharField(max_length=50, label="City")
     userCountry = forms.CharField(max_length=50, label="Country")
+
+
+class PasswordChangeForm(forms.Form):
+    oldPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input-group'}), label="Old Password")
+    newPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input-group'}), label="New Password")
+    confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input-group'}), label="Confirm Password")

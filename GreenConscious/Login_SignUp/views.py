@@ -3,10 +3,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
-from Login_SignUp.forms import signupForm, loginForm, profileForm
+from Login_SignUp.forms import signupForm, loginForm, profileForm, PasswordChangeForm
 from Login_SignUp.models import UserProfile
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 def loginPage(request):
@@ -37,6 +37,7 @@ def loginPage(request):
 
 def logoutPage(request):
     if request.user.is_authenticated:
+        logout(request)
         return render(request, template_name='logout.html', context={})
     else:
         return redirect('Login_SignUp:homePage')
@@ -62,7 +63,7 @@ def signupPage(request):
         return render(request, template_name='signup.html', context={'form': form})
 
 
-def profile_view(request):
+def profile(request):
     if request.user.is_authenticated:
         inputUserName = request.user.username
         print("called received in profile: ", inputUserName)
@@ -76,19 +77,43 @@ def profile_view(request):
                 userCountry = form.cleaned_data['userCountry']
                 userDetails.first_name = userFirstName
                 userDetails.last_name  = userLastName
-                userProfile = UserProfile.objects.create(user=userDetails,
-                                            city=userCity, country=userCountry,
-                                                         profileImage='')
-                userProfile.save()
+                userProfile = UserProfile.objects.get(user=userDetails)
+                if userProfile is None:
+                    userProfile = UserProfile.objects.create(user=userDetails,
+                                                             city=userCity, country=userCountry,
+                                                             profileImage='')
+                    userDetails.save()
+                    userProfile.save()
+                else:
+                    userDetails.save()
+                    userProfile = (UserProfile.objects.filter(user=userDetails).update(city=userCity, country=userCountry,
+                                                         profileImage=''))
+
                 return redirect('MainPage:main_page')
         else:
-            initial_data = {
-                'userFirstName': "",
-                'userLastName': "",
-                'userCity': "",
-                'userCountry': ""
-            }
-            form = profileForm(initial=initial_data)
+            try:
+                userprofile_details = UserProfile.objects.get(user=userDetails)
+            except UserProfile.DoesNotExist:
+                userprofile_details = None
+
+            if userprofile_details is None:
+                initial_data = {
+                    'userFirstName': "",
+                    'userLastName': "",
+                    'userCity': "",
+                    'userCountry': ""
+                }
+                form = profileForm(initial=initial_data)
+            else:
+                print("firstname: ", userprofile_details.user.first_name)
+                print("lastname: ", userprofile_details.user.last_name)
+                initial_data = {
+                    'userFirstName': userprofile_details.user.first_name,
+                    'userLastName': userprofile_details.user.last_name,
+                    'userCity': userprofile_details.city,
+                    'userCountry': userprofile_details.country,
+                }
+                form = profileForm(initial=initial_data)
             context = {
                 'form': form,
                 'userDetails': userDetails,
@@ -98,9 +123,30 @@ def profile_view(request):
         return render(request, template_name='homepage.html', context={})
 
 
-def change_password_view(request, inputUserName):
-    # Handle password change logic here
-    return HttpResponse("Change Password Page")  # Replace with your logic
+def change_password(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = PasswordChangeForm(request.POST)
+            if form.is_valid():
+                oldpassword = form.cleaned_data['oldPassword']
+                newpassword = form.cleaned_data['newPassword']
+                confirmpassword = form.cleaned_data['confirmPassword']
+                user = authenticate(request, username=request.user.username, password=oldpassword)
+                if user is not None:
+                    if confirmpassword != newpassword:
+                        return HttpResponse('Old password and new password did not match, Please try again')
+                    else:
+                        user.set_password(newpassword)
+                        return redirect('Login_SignUp:password_change_success')
+                else:
+                    return HttpResponse('Incorrect old password, Please try again')
+            else:
+                return HttpResponse('Invalid Data, Please try again')
+        else:
+            form = PasswordChangeForm()
+            return render(request, template_name='changepassword.html', context={'form': form})
+    else:
+        return redirect('Login_SignUp:homePage')
 
 
 def change_profile_image_view(request, inputUserName):
@@ -110,3 +156,10 @@ def change_profile_image_view(request, inputUserName):
 
 def homePage(request):
     return render(request, template_name='homepage.html', context={})
+
+
+def password_change_success(request):
+    if request.user.is_authenticated:
+        return render(request, template_name='passwordchangesuccess.html', context={})
+    else:
+        return redirect('Login_SignUp:homePage')
