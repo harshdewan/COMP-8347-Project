@@ -92,7 +92,7 @@
                 <a href="{% url 'Login_SignUp:change_password' inputUserName=userDetails.userName %}">Change Password</a><br>
 
                 <!-- Redirect to main page -->
-                <a href="{% url 'Login_SignUp:main_page'  %}">Main Page</a>
+                <a href="{% url 'MainPage:main_page'  %}">Main Page</a>
 
             {% else %}
                 <!-- Display form for the first time entry -->

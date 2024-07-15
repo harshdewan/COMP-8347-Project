@@ -4,21 +4,22 @@
 
 from django import forms
 
-from Login_SignUp.models import UserLoginCredentials
+from django.contrib.auth.models import User
 
-
-#from models import UserProfileDetails, UserLoginCredentials
 
 
 class signupForm(forms.ModelForm):
-    userPassword = forms.CharField(widget=forms.PasswordInput(), label= 'Password', max_length=10)
+    password = forms.CharField(widget=forms.PasswordInput(), label='Password', max_length=10)
     class Meta:
-        model = UserLoginCredentials
-        fields = ['userName', 'userEmail', 'userPassword']
+        model = User
+        fields = ['username', 'email', 'password']
+        help_texts = {
+            'username': None,
+        }
         labels = {
-            'userName' : 'Username',
-            'userEmail' : 'Email',
-            'userPassword' : 'Password'
+            'username': 'Username',
+            'email': 'Email',
+            'password': 'Password'
         }
 
 
@@ -32,5 +33,3 @@ class profileForm(forms.Form):
     userLastName = forms.CharField(max_length=50, label="Last Name")
     userCity = forms.CharField(max_length=50, label="City")
     userCountry = forms.CharField(max_length=50, label="Country")
-
-

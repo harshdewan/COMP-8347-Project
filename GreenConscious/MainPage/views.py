@@ -19,6 +19,7 @@ def parse_custom_date(date_str):
 
 
 def main_page(request):
+    print("inside main_page for view function", "<", request.user.username,">",  "<",request.user.is_authenticated,">")
     query = request.GET.get('q')
     events_list = Event.objects.all()
 
