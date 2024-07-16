@@ -9,4 +9,9 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(EventCategory)
 class EventCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'totalEvents')
+    list_display = ('name', 'total_events')
+
+    def total_events(self, obj):
+        return obj.total_events
+
+    total_events.short_description = 'Total events'

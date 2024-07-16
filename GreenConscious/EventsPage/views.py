@@ -20,6 +20,7 @@ def event_creation(request):
             event_description = form.cleaned_data['event_description']
             location = form.cleaned_data.get('location')
             image = form.cleaned_data.get('image')
+            event_category = form.cleaned_data['event_category']
 
             e = Event(name=event_name,
                       start_date=start_date,
@@ -27,7 +28,8 @@ def event_creation(request):
                       description=event_description,
                       created_by=request.user,
                       location=location,
-                      image=image)
+                      image=image,
+                      category=event_category)
             e.save()
 
             return redirect(to='MainPage:main_page')

@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from MainPage.models import EventCategory
 
 
 class EventCreationForm(forms.Form):
@@ -21,12 +22,17 @@ class EventCreationForm(forms.Form):
 
     image = forms.ImageField(required=False,
                              label='Event Image',
-                             widget=forms.ClearableFileInput(attrs={'class': 'form-control',}))
+                             widget=forms.ClearableFileInput())
 
     location = forms.CharField(required=True,
                                label='Event Location',
                                widget=forms.TextInput(attrs={'class': 'input_field',
                                                              'placeholder': 'Please enter location'}))
+
+    event_category = forms.ModelChoiceField(queryset=EventCategory.objects.all(),
+                                            label='Event Category',
+                                            empty_label=None,
+                                            widget=forms.Select(attrs={'class': 'input_field'}))
 
 
     def clean(self):

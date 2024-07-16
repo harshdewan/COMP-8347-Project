@@ -57,10 +57,20 @@
     <div class="content">
         <form method="get" action="{% url 'MainPage:main_page' %}" class="search-form">
             <input type="text" name="q" class="input_field"
-                   value="{% if query %}{{ query }}{% endif %}" placeholder="Enter Name or Date Mon. DD, YYYY">
-            <div>
-                <button class="search_button text-center" type="submit">Search</button>
-            </div>
+                   value="{% if query %}{{ query }}{% endif %}" title="Please enter Event Name or Date Mon. DD, YYYY" 
+                   placeholder="Search to filter">
+            <select name="category" class="input_field">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}"
+                            {% if selected_category == category.id %}
+                                selected
+                            {% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button class="search_button text-center" type="submit">Search</button>
         </form>
 
         {% for event in events %}
@@ -72,6 +82,7 @@
                 {% if event.image %}
                     <img src="{{ event.image.url }}" alt="{{ event.name }}">
                 {% endif %}
+                <p><strong>Category:</strong> {{ event.category }}</p>
                 <p><strong>Location:</strong> {{ event.location }}</p>
                 <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
             </div>
