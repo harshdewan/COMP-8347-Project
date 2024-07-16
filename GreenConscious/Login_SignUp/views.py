@@ -25,7 +25,7 @@ def loginPage(request):
                     print("after login function")
                     return redirect('MainPage:main_page')
                 else:
-                    return HttpResponse('Unable to login, Please try again')
+                    return HttpResponse('Invalid Username/Password, Please try again')
             except User.DoesNotExist:
                 return HttpResponse('Invalid Username/Password, Please try again')
         else:
@@ -50,8 +50,9 @@ def signupPage(request):
             userName = form.cleaned_data['username']
             userEmail = form.cleaned_data['email']
             userPassword = form.cleaned_data['password']
-            user = User.objects.create(username=userName, email=userEmail, password=userPassword)
             try:
+                user = User.objects.create(username=userName, email=userEmail)
+                user.set_password(userPassword)
                 user.save()
             except Exception as exception:
                 return HttpResponse(f'Signup failed: {exception}')
@@ -137,7 +138,9 @@ def change_password(request):
                         return HttpResponse('Old password and new password did not match, Please try again')
                     else:
                         user.set_password(newpassword)
-                        return redirect('Login_SignUp:password_change_success')
+                        user.save()
+                        return render(request, template_name="passwordchangesuccess.html", context={})
+                        #return redirect('Login_SignUp:password_change_success')
                 else:
                     return HttpResponse('Incorrect old password, Please try again')
             else:
