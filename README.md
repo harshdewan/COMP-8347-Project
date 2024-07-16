@@ -20,3 +20,6 @@ Primary use is for someone who wants to contribute and wants to check what event
 **Init:**
 run this to install required packages
 pip install -r requirements.txt
+
+
+
