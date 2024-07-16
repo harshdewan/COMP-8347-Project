@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "Login_SignUp.apps.LoginSignupConfig",
     'EventsPage.apps.EventspageConfig',
     'community.apps.CommunityConfig',
+    'VolunteerMatching.apps.VolunteermatchingConfig',
 ]
 
 MIDDLEWARE = [
