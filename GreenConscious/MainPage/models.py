@@ -14,3 +14,11 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class EventCategory(models.Model):
+    name = models.CharField(max_length=100, blank=False, unique=True, null=False)
+    totalEvents = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name

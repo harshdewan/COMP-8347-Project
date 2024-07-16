@@ -3,7 +3,7 @@ from .models import UserProfile
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'city', 'country')
+    list_display = ('user', 'city', 'country', 'profileImage', 'eventInterested')
     search_fields = ('user__username', 'city', 'country')
     list_filter = ('city', 'country')
 
