@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from MainPage.models import Event
+from MainPage.models import Event, EventCategory
 from django.db.models import Q
 from django.http import HttpResponse
 
@@ -21,9 +21,13 @@ def parse_custom_date(date_str):
 def main_page(request):
     print("inside main_page for view function", "<", request.user.username,">",  "<",request.user.is_authenticated,">")
     query = request.GET.get('q')
+    category_id = request.GET.get('category')
     events_list = Event.objects.all()
 
     # filter events
+    if category_id:
+        events_list = events_list.filter(category_id=category_id)
+
     if query:
         # Initially checking if the search input is a date or not
         query_date = parse_custom_date(query)
@@ -46,7 +50,13 @@ def main_page(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         events = paginator.page(paginator.num_pages)
 
-    return render(request, 'MainPage/main_page.html', {'events': events, 'query': query})
+    categories = EventCategory.objects.all()  # Retrieve all event categories
+
+    return render(request, 'MainPage/main_page.html', {'events': events,
+                                                       'query': query,
+                                                       'categories': categories,
+                                                       'selected_category': int(category_id) if category_id else None
+                                                       })
 
 
 def event_detail(request, event_id):
