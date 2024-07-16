@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'MainPage.apps.MainPageConfig',
     "Login_SignUp.apps.LoginSignupConfig",
     'EventsPage.apps.EventspageConfig',
+    'community.apps.CommunityConfig',
 ]
 
 MIDDLEWARE = [

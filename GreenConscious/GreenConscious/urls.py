@@ -24,6 +24,7 @@ greenconscious_patterns = [
     path('', include('Login_SignUp.urls')),
     path('', include('MainPage.urls')),
     path('', include('EventsPage.urls')),
+    path('community/', include('community.urls')),
 ]
 
 urlpatterns = [
