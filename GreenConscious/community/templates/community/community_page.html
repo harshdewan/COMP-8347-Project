@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Discussion{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="content">
+            <header class="header">
+                <a href="{% url 'create_post' %}" class="btn btn-primary">CREATE POST</a>
+                <br><br>
+                <h1 class="heading">Discussion</h1>
+            </header>
+            <main>
+                <h2>Posts:</h2>
+                <ul class="post-list">
+                    {% for post in posts %}
+                        <li class="post-item">
+                            <article class="post">
+                                <header class="post-header">
+                                    <h3 class="post-title">{{ post.title }}</h3>
+                                </header>
+                                <section class="post-content">
+                                    <p>{{ post.content }}</p>
+                                </section>
+                                <footer class="post-footer">
+                                    <p><strong>Author:</strong> {{ post.author.username }}</p>
+                                    <p><strong>Created At:</strong> {{ post.created_at }}</p>
+                                </footer>
+                            </article>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </main>
+        </div>
+    </div>
+{% endblock %}
