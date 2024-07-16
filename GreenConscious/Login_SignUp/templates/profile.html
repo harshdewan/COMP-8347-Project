@@ -78,25 +78,24 @@
 
             {% if userDetails %}
                 <!-- Display user details if available -->
-                <p>Welcome, {{ userDetails.userName }}</p>
-                <p>Email: {{ userDetails.userEmail }}</p>
-                <p>Password: ***** </p>
+                <p>Welcome, {{ userDetails.username }}</p>
+                <p>Email: {{ userDetails.email }}</p>
 
-                <form action="{% url 'Login_SignUp:profile_view' inputUserName=userDetails.userName %}" method="post" enctype="multipart/form-data">
+                <form action="{% url 'Login_SignUp:profile_view'  %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <input type="submit" value="Save Profile">
                 </form>
 
                 <!-- Option to change password -->
-                <a href="{% url 'Login_SignUp:change_password' inputUserName=userDetails.userName %}">Change Password</a><br>
+                <a href="{% url 'Login_SignUp:change_password' %}">Change Password</a><br>
 
                 <!-- Redirect to main page -->
-                <a href="{% url 'Login_SignUp:main_page'  %}">Main Page</a>
+                <a href="{% url 'MainPage:main_page'  %}">Main Page</a>
 
             {% else %}
                 <!-- Display form for the first time entry -->
-                <form action="{% url 'Login_SignUp:profile_view' inputUserName=userDetails.userName %}" method="post" enctype="multipart/form-data">
+                <form action="{% url 'Login_SignUp:profile_view' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <input type="submit" value="Create Profile">

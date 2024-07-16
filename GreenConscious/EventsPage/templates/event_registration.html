@@ -11,7 +11,7 @@
 {% block content %}
     <div class="container-fluid">
         <div class="content">
-            <div class="heading">Event Creation</div>
+            <div class="heading">Event Registration</div>
             <form action="{% url 'EventsPage:event_registration' event_id %}" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
