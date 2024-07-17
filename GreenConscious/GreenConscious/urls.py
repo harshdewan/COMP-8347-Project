@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 greenconscious_patterns = [
     path('', include('Login_SignUp.urls')),
     path('', include('MainPage.urls')),
-    path('', include('EventsPage.urls')),
+    path('events/', include('EventsPage.urls')),
     path('community/', include('community.urls')),
     path('volunteer_matching/', include('VolunteerMatching.urls')),
 ]
