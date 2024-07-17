@@ -1,9 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
-
-from Login_SignUp.forms import signupForm, loginForm, profileForm, PasswordChangeForm
+from Login_SignUp.forms import signupForm, loginForm, profileForm, PasswordChangeForm, ResetPasswordForm
 from Login_SignUp.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -78,7 +75,11 @@ def profile(request):
                 userCountry = form.cleaned_data['userCountry']
                 userDetails.first_name = userFirstName
                 userDetails.last_name  = userLastName
-                userProfile = UserProfile.objects.get(user=userDetails)
+                try:
+                    userProfile = UserProfile.objects.get(user=userDetails)
+                except Exception:
+                    userProfile = None
+
                 if userProfile is None:
                     userProfile = UserProfile.objects.create(user=userDetails,
                                                              city=userCity, country=userCountry,
@@ -166,3 +167,34 @@ def password_change_success(request):
         return render(request, template_name='passwordchangesuccess.html', context={})
     else:
         return redirect('Login_SignUp:homePage')
+
+
+def password_reset(request):
+    if request.method == 'POST':
+        print("password reset view if")
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['userName']
+            newpassword = form.cleaned_data['newPassword']
+            confirmpassword = form.cleaned_data['confirmPassword']
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                user = None
+            if user is not None:
+                if confirmpassword != newpassword:
+                    return HttpResponse('confirm password and new password did not match, Please try again')
+                else:
+                    user.set_password(newpassword)
+                    user.save()
+                    return render(request, template_name="passwordchangesuccess.html", context={})
+                    # return redirect('Login_SignUp:password_change_success')
+            else:
+                return HttpResponse('Incorrect username, Please try again')
+        else:
+            return HttpResponse('Invalid Data, Please try again')
+    else:
+        print("password reset view else")
+        form = ResetPasswordForm()
+        return render(request, template_name='passwordreset.html', context={'form': form})
+
