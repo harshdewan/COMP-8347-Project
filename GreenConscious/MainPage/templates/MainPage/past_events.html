@@ -46,6 +46,20 @@
 </style>
 {% endblock %}
 
+{% block navbar-content%}
+    <a href="{% url 'MainPage:main_page' %}">
+        <div class="name">Green Conscious</div>
+    </a>
+    <div class="login-register">
+        <a href="{% url 'Login_SignUp:profile_view' %}">
+            <button>My Profile</button>
+        </a>
+        <a href="{% url 'MainPage:main_page' %}">
+            <button>Home</button>
+        </a>
+    </div>
+{%  endblock %}
+
 {% block content %}
 <div class="container">
     <div class="sidebar">
