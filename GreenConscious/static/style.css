@@ -45,13 +45,13 @@ body {
 }
 
 /* Event container styles */
-.container {
-    padding: 10px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+/*.container {*/
+/*    padding: 10px;*/
+/*    border-radius: 12px;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*}*/
 
 .event {
     background-color: #f9f9f9;
