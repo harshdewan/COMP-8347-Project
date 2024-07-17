@@ -10,7 +10,20 @@ class Event(models.Model):
     description = models.TextField()
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     image = models.ImageField(upload_to='event_images/', null=True, blank=True)  # New field for event image
-    location = models.CharField(max_length=255, null=True, blank=True)  # Optional field for location
+    location = models.CharField(max_length=255, default='Windsor, ON')
+    category = models.ForeignKey('EventCategory', on_delete=models.CASCADE, related_name='events', default=1)
 
     def __str__(self):
         return self.name
+
+
+class EventCategory(models.Model):
+    name = models.CharField(max_length=100, blank=False, unique=True, null=False)
+    #totalEvents = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def total_events(self):
+        return self.events.count()

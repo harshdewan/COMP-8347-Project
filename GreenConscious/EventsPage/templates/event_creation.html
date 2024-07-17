@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Event Creation{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="content">
+            <div class="heading">Event Creation</div>
+            <form action="{% url 'EventsPage:event_creation' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button>Create Event</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Event Registration{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="content">
+            <div class="heading">Event Registration</div>
+            <form action="{% url 'EventsPage:event_registration' event_id %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button>Register for this Event</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

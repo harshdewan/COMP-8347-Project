@@ -1,14 +1,41 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.utils import timezone
 
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from MainPage.models import Event
-from .forms import EventCreationForm
+from MainPage.models import Event, EventCategory
+from django.db.models import Q
 from django.http import HttpResponse
 
+
+def parse_custom_date(date_str):
+    try:
+        # Attempting to parse the date string in the format "Month. Day, Year"
+        return datetime.strptime(date_str, '%b. %d, %Y').date()
+    except ValueError:
+        return None
+
+
 def main_page(request):
+    print("inside main_page for view function", "<", request.user.username,">",  "<",request.user.is_authenticated,">")
+    query = request.GET.get('q')
+    category_id = request.GET.get('category')
     events_list = Event.objects.all()
+
+    # filter events
+    if category_id:
+        events_list = events_list.filter(category_id=category_id)
+
+    if query:
+        # Initially checking if the search input is a date or not
+        query_date = parse_custom_date(query)
+        if query_date:
+            events_list = events_list.filter(Q(start_date=query_date) | Q(end_date=query_date))
+        else:
+            # If the search input isn't a date, filtering the date with event name
+            events_list = events_list.filter(Q(name__icontains=query))
 
     # Paginator settings
     paginator = Paginator(events_list, 5)  # Show 10 events per page
@@ -23,7 +50,13 @@ def main_page(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         events = paginator.page(paginator.num_pages)
 
-    return render(request, 'MainPage/main_page.html', {'events': events})
+    categories = EventCategory.objects.all()  # Retrieve all event categories
+
+    return render(request, 'MainPage/main_page.html', {'events': events,
+                                                       'query': query,
+                                                       'categories': categories,
+                                                       'selected_category': int(category_id) if category_id else None
+                                                       })
 
 
 def event_detail(request, event_id):
@@ -48,24 +81,3 @@ def past_events(request):
         events = paginator.page(paginator.num_pages)
 
     return render(request, 'MainPage/past_events.html', {'events': events})
-
-
-def event_creation(request):
-    if request.method == 'POST':
-        form = EventCreationForm(request.POST)
-        if form.is_valid():
-            event_name = form.cleaned_data['event_name']
-            start_date = form.cleaned_data['start_date']
-            end_date = form.cleaned_data['end_date']
-            event_description = form.cleaned_data['event_description']
-
-            e = Event(name=event_name,
-                      start_date=start_date,
-                      end_date=end_date,
-                      description=event_description,
-                      created_by=request.user)
-            e.save()
-            return render(request, template_name='MainPage/main_page.html', context={'event': e})
-        else:
-            return HttpResponse('Invalid Data')
-    return render(request, 'Events/event_creation.html', {'form': EventCreationForm})
