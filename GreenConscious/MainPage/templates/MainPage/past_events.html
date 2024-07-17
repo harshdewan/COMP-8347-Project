@@ -1,60 +1,68 @@
 {% extends 'base.html' %}
 
-{% block title %}Past Events{% endblock %}
+{% block title %}Your Dashboard{% endblock %}
 
 {% load static %}
 
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'MainPage/style.css' %}">
 <style>
-    .container {
-        display: flex;
-    }
-    .sidebar {
-        width: 200px;
-        margin-right: 20px;
-        background-color: #f7f7f7;
-        padding: 10px;
-        border-radius: 5px;
-    }
-    .content {
-        flex-grow: 1;
-    }
-    .event img {
-        max-width: 100%;
-        height: auto;
-    }
-    .pagination {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
-    .pagination a, .pagination span {
-        margin: 0 5px;
-        padding: 5px 10px;
-        border: 1px solid #ddd;
-        text-decoration: none;
-        color: #333;
-    }
-    .pagination .current {
-        background-color: #ddd;
-        font-weight: bold;
-    }
-    .pagination a:hover {
-        background-color: #f1f1f1;
-    }
+* {
+  box-sizing: border-box;
+}
+
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+.left {
+  width: 25%;
+}
+
+.right {
+  width: 75%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+    margin: 20px;
+}
+
+.no-events-message {
+    text-align: center;
+    margin-top: 20px;
+    font-style: italic;
+    color: #999;
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="sidebar">
-        <ul>
-            <li><a href="{% url 'MainPage:main_page' %}">Upcoming Events</a></li>
-            <li><a href="{% url 'MainPage:past_events' %}">Past Events</a></li>
-        </ul>
-    </div>
-    <div class="content">
+
+<div class="row">
+  <div class="column" style="background-color:#ffffff;">
+      <div class="row">
+          <button onclick="location.href='{% url 'EventsPage:event_creation' %}'" class="search_button text-center">Create Event</button>
+      </div>
+      <div class="row">
+    <button onclick="location.href='{% url 'MainPage:main_page' %}'" class="search_button text-center">Upcoming Events</button>
+      </div>
+      <div class="row">
+    <button onclick="location.href='{% url 'MainPage:past_events' %}'" class="search_button text-center">Past Events</button>
+      </div>
+  </div>
+
+  <div class="column" style="background-color:#ffffff;">
+    {% if events %}
         {% for event in events %}
             <div class="event">
                 <h2><a href="{% url 'MainPage:event_detail' event.id %}">{{ event.name }}</a></h2>
@@ -87,6 +95,10 @@
                 {% endif %}
             </span>
         </div>
-    </div>
+    {% else %}
+        <p class="no-events-message">No events found.</p>
+    {% endif %}
+  </div>
 </div>
+
 {% endblock %}

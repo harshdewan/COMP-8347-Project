@@ -33,6 +33,13 @@
   clear: both;
 }
 
+.no-events-message {
+    text-align: center;
+    margin-top: 20px;
+    font-style: italic;
+    color: #999;
+}
+
 .column {
     margin: 20px;
 }
@@ -72,7 +79,7 @@
       </select>
       <button class="search_button text-center" type="submit">Search</button>
     </form>
-
+    {% if events %}
     {% for event in events %}
       <div class="event">
         <h2><a href="{% url 'MainPage:event_detail' event.id %}">{{ event.name }}</a></h2>
@@ -106,6 +113,9 @@
         {% endif %}
       </span>
     </div>
+      {% else %}
+        <p class="no-events-message">No events found.</p>
+    {% endif %}
   </div>
 </div>
 {% endblock %}
