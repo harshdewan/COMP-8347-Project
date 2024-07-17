@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f7f4; /* Light green background */
+    color: #333; /* Dark text color */
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row; /* Arrange items in a row */
+}
+.profile-image {
+    flex: 1; /* Take 1/3 of container width */
+    text-align: center;
+    padding: 20px;
+}
+.profile-details {
+    flex: 2; /* Take 2/3 of container width */
+    padding: 20px;
+}
+h1 {
+    color: #4CAF50; /* Green header text */
+    text-align: center;
+}
+form {
+    margin-top: 20px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #4CAF50; /* Green label text */
+}
+input[type="text"], input[type="password"], input[type="submit"] {
+    width: calc(100% - 12px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+input[type="submit"] {
+    background-color: #4CAF50; /* Green submit button */
+    color: white;
+    cursor: pointer;
+}
+a {
+    color: #4CAF50; /* Green links */
+    text-decoration: none;
+    margin-right: 10px;
+}
+a:hover {
+    text-decoration: underline;
+}

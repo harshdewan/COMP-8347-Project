@@ -43,8 +43,25 @@
 .column {
     margin: 20px;
 }
+
+
+
 </style>
 {% endblock %}
+
+{% block navbar-content%}
+    <a href="{% url 'MainPage:main_page' %}">
+        <div class="name">Green Conscious</div>
+    </a>
+    <div class="login-register">
+        <a href="{% url 'Login_SignUp:profile_view' %}">
+            <button>My Profile</button>
+        </a>
+         <a href="{% url 'Login_SignUp:logoutPage' %}">
+            <button>Log Out</button>
+        </a>
+    </div>
+{%  endblock %}
 
 {% block content %}
 

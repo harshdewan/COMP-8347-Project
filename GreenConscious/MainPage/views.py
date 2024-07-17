@@ -3,7 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from MainPage.models import Event, EventCategory
 from django.db.models import Q
@@ -19,6 +19,8 @@ def parse_custom_date(date_str):
 
 
 def main_page(request):
+    if not request.user.is_authenticated:
+        return redirect('Login_SignUp:homePage')
     print("inside main_page for view function", "<", request.user.username,">",  "<",request.user.is_authenticated,">")
     query = request.GET.get('q')
     category_id = request.GET.get('category')
