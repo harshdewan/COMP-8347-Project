@@ -8,18 +8,14 @@ from MainPage.models import Event, EventCategory
 
 
 def volunteer_matching(request):
-    #interest = EventCategory.objects.all()
-    #print(interest)
     matched_events = None
     if request.method == 'POST':
-        form = VolunteerMatchingForm(request.POST, user=request.user)
+        form = VolunteerMatchingForm(request.POST)
         if form.is_valid():
-            interest = form.cleaned_data['interest']
+            interest = form.cleaned_data['userEventInterested']
             date = form.cleaned_data['date']
-            matched_events = Event.objects.filter(start_date=date, category=interest)
+            matched_events = Event.objects.filter(start_date__gte=date, category=interest)
+            print("matched events: ", matched_events)
     else:
-        form = VolunteerMatchingForm(user=request.user)
-
-    #print("---> ", request.user.username)
-    print("---> ", UserProfile.objects.get(user=request.user).eventInterested)
+        form = VolunteerMatchingForm()
     return render(request, 'VolunteerMatching/volunteer_matching.html', {'form': form, 'matched_events': matched_events})
