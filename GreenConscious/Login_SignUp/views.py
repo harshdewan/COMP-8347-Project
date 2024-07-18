@@ -13,7 +13,7 @@ def loginPage(request):
         if form.is_valid():
             userName = form.cleaned_data['loginUserName']
             userPassword = form.cleaned_data['loginPassword']
-            print("userName: ", userName,  " userPassword: ", userPassword)
+            print("userName: ", userName, " userPassword: ", userPassword)
             try:
                 checkUserName = User.objects.get(username=userName)
                 user = authenticate(request, username=userName, password=userPassword)
@@ -22,14 +22,16 @@ def loginPage(request):
                     print("after login function")
                     return redirect('MainPage:main_page')
                 else:
-                    return HttpResponse('Invalid Username/Password, Please try again')
+                    return render(request, template_name='login.html', context={'form': form,
+                                                                                'invalidMessage': 'Invalid Username/Password. Please try again'})
             except User.DoesNotExist:
-                return HttpResponse('Invalid Username/Password, Please try again')
+                return render(request, template_name='login.html', context={'form': form, 'invalidMessage': 'Invalid Username/Password. Please try again'})
+
         else:
-            return HttpResponse('Invalid Data')
+            return render(request, template_name='login.html', context={'form': form, 'invalidMessage': 'Unable to proceed. Please try again!'})
     else:
         form = loginForm()
-        return render(request, template_name='login.html', context={'form': form})
+        return render(request, template_name='login.html', context={'form': form, 'invalidMessage': ''})
 
 
 def logoutPage(request):
@@ -55,7 +57,7 @@ def signupPage(request):
                 return HttpResponse(f'Signup failed: {exception}')
             return render(request, template_name='login.html', context={'form': loginForm})
         else:
-            return HttpResponse('Invalid Data')
+            return render(request, template_name='signup.html', context={'form': form, 'invalidMessage':'Unable to proceed. Please try again'})
     else:
         form = signupForm()
         return render(request, template_name='signup.html', context={'form': form})
@@ -74,7 +76,7 @@ def profile(request):
                 userCity = form.cleaned_data['userCity']
                 userCountry = form.cleaned_data['userCountry']
                 userDetails.first_name = userFirstName
-                userDetails.last_name  = userLastName
+                userDetails.last_name = userLastName
                 try:
                     userProfile = UserProfile.objects.get(user=userDetails)
                 except Exception:
@@ -88,8 +90,9 @@ def profile(request):
                     userProfile.save()
                 else:
                     userDetails.save()
-                    userProfile = (UserProfile.objects.filter(user=userDetails).update(city=userCity, country=userCountry,
-                                                         profileImage=''))
+                    userProfile = (
+                        UserProfile.objects.filter(user=userDetails).update(city=userCity, country=userCountry,
+                                                                            profileImage=''))
 
                 return redirect('MainPage:main_page')
         else:
@@ -197,4 +200,3 @@ def password_reset(request):
         print("password reset view else")
         form = ResetPasswordForm()
         return render(request, template_name='passwordreset.html', context={'form': form})
-
