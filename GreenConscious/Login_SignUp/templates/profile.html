@@ -66,8 +66,7 @@
     <div class="container">
         <div class="profile-image">
             <!-- Display profile image -->
-            <img src="{% static 'images/default_profile.png' %}" alt="Profile Image" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
-            <p>Change Profile Image</p> <!-- Link to change image -->
+            <img src="{% static 'images/{{ form.userProfileImage }}' %}" alt="Profile Image" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
         </div>
         <div class="profile-details">
             <h1>User Profile</h1>

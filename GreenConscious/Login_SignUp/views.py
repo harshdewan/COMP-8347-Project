@@ -71,13 +71,14 @@ def profile(request):
         print("called received in profile: ", inputUserName)
         userDetails = User.objects.get(username=inputUserName)
         if request.method == 'POST':
-            form = profileForm(request.POST)
+            form = profileForm(request.POST, request.FILES)
             if form.is_valid():
                 userFirstName = form.cleaned_data['userFirstName']
                 userLastName = form.cleaned_data['userLastName']
                 userCity = form.cleaned_data['userCity']
                 userCountry = form.cleaned_data['userCountry']
                 userEventInterested = form.cleaned_data['userEventInterested']
+                userProfileImage = form.cleaned_data.get('userProfileImage')
                 userDetails.first_name = userFirstName
                 userDetails.last_name = userLastName
                 try:
@@ -89,18 +90,20 @@ def profile(request):
                     print("user: userEventInterested: ", userEventInterested)
                     eventCategory = EventCategory.objects.get(name=userEventInterested)
                     print("eventCategoryobject: ", eventCategory.__str__())
+                    print("new userProfileImage: ", userProfileImage)
                     userProfile = UserProfile.objects.create(user=userDetails,
                                                              city=userCity, country=userCountry,
-                                                             profileImage='', eventInterested=eventCategory)
+                                                             profileImage=userProfileImage, eventInterested=eventCategory)
                     userDetails.save()
                     userProfile.save()
                 else:
                     eventCategory = EventCategory.objects.get(name=userEventInterested)
                     print("eventCategoryobject: ", eventCategory.__str__())
+                    print("update userProfileImage: ", userProfileImage)
                     userDetails.save()
                     userProfile = (
                         UserProfile.objects.filter(user=userDetails).update(city=userCity, country=userCountry,
-                                                                            profileImage='',eventInterested=eventCategory))
+                                                                            profileImage=userProfileImage, eventInterested=eventCategory))
 
                 return redirect('MainPage:main_page')
         else:
@@ -114,7 +117,9 @@ def profile(request):
                     'userFirstName': "",
                     'userLastName': "",
                     'userCity': "",
-                    'userCountry': ""
+                    'userCountry': "",
+                    'userEventInterested': "",
+                    'userProfileImage': "default_profile.png",
                 }
                 form = profileForm(initial=initial_data)
             else:
@@ -127,7 +132,8 @@ def profile(request):
                     'userLastName': userprofile_details.user.last_name,
                     'userCity': userprofile_details.city,
                     'userCountry': userprofile_details.country,
-                    'userEventInterested': EventCategory.objects.get(id=userprofile_details.eventInterested.id)
+                    'userEventInterested': EventCategory.objects.get(id=userprofile_details.eventInterested.id),
+                    'userProfileImage': userprofile_details.profileImage
                 }
                 form = profileForm(initial=initial_data)
             context = {

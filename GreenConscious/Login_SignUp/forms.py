@@ -31,6 +31,9 @@ class loginForm(forms.Form):
 
 
 class profileForm(forms.Form):
+    userProfileImage = forms.ImageField(required=False,
+                                        label='Profile Image',
+                                        widget=forms.ClearableFileInput())
     userFirstName = forms.CharField(max_length=50, label="First Name")
     userLastName = forms.CharField(max_length=50, label="Last Name")
     userCity = forms.CharField(max_length=50, label="City")
