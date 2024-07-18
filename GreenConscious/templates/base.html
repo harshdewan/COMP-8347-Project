@@ -12,7 +12,6 @@
     <!-- Link CSS file -->
     {% load static %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 
     <!-- Block for additional CSS files -->
@@ -35,9 +34,40 @@
         Replace Content Here
     {% endblock %}
 </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<hr style="height:6px;border-width:0;color:green;background-color:green">
+<!-- Footer -->
+<footer class="footer mt-auto py-3">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <h5 style="font-weight: bold;font-size: 30px;color:green;">Green Conscious</h5>
+                <h6>Sustainability for All.</h6>
+            </div>
+            <div class="col-md-4">
+                <h5>Sections</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'MainPage:main_page' %}">Home</a></li>
+                    <li><a href="{% url 'EventsPage:event_creation' %}">Event Creation</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Company</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'contact_form' %}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+           </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>
