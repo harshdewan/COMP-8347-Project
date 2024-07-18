@@ -1,0 +1,29 @@
+body {
+    background-color: #e8f5e9; /* Light green background */
+}
+
+.navbar {
+    background-color: #2e7d32; /* Dark green navbar */
+}
+
+.nav-link {
+    color: #ffffff !important; /* White text for links */
+}
+
+.display-4 {
+    color: #388e3c; /* Main heading color */
+}
+
+.lead {
+    color: #4caf50; /* Subheading color */
+}
+
+.btn-outline-success {
+    border-color: #4caf50;
+    color: #4caf50;
+}
+
+.btn-outline-success:hover {
+    background-color: #4caf50;
+    color: #ffffff;
+}

@@ -23,17 +23,9 @@
 <body>
 <!-- Navbar -->
 <div class="navbar">
-    <a href="{% url 'MainPage:main_page' %}">
-        <div class="name">Green Conscious</div>
-    </a>
-    <div class="login-register">
-        <a href="{% url 'MainPage:main_page' %}">
-            <button>Log In</button>
-        </a>
-        <a href="{% url 'MainPage:main_page' %}">
-            <button>Sign Up</button>
-        </a>
-    </div>
+    {% block navbar-content %}
+        Content for nav-bar based on login/logout
+    {% endblock %}
 </div>
 
 <!-- Content area -->

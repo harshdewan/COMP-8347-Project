@@ -7,12 +7,26 @@
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 {% endblock %}
+{% block navbar-content%}
+    <a href="{% url 'MainPage:main_page' %}">
+        <div class="name">Green Conscious</div>
+    </a>
+    <div class="login-register">
+        <a href="{% url 'Login_SignUp:profile_view' %}">
+            <button>My Profile</button>
+        </a>
+        <a href="{% url 'MainPage:main_page' %}">
+            <button>Home</button>
+        </a>
+    </div>
+{%  endblock %}
+
 
 {% block content %}
     <div class="container-fluid">
         <div class="content">
             <div class="heading">Event Creation</div>
-            <form action="{% url 'EventsPage:event_creation' %}" method="post">
+            <form action="{% url 'EventsPage:event_creation' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button>Create Event</button>

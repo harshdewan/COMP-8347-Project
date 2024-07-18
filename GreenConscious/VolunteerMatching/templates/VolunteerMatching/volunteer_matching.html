@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Volunteer Matching{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+{% endblock %}
+
+
+{% block navbar-content%}
+    <a href="{% url 'MainPage:main_page' %}">
+        <div class="name">Green Conscious</div>
+    </a>
+    <div class="login-register">
+        <a href="{% url 'Login_SignUp:profile_view' %}">
+            <button>My Profile</button>
+        </a>
+        <a href="{% url 'MainPage:main_page' %}">
+            <button>Home</button>
+        </a>
+    </div>
+{%  endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="content">
+            <header class="header">
+                <h1 class="heading">Volunteer Matching</h1>
+            </header>
+            <main>
+                <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Match</button>
+                </form>
+
+                {% if matched_events %}
+                <h2>Matched Events</h2>
+                    <ul>{% for event in matched_events %}
+                    <li>
+                    <h3>{{ event.name }}</h3>
+                    <p>Start Date: {{ event.start_date }}</p>
+                    <p>End Date: {{ event.end_date }}</p>
+                    <p>Description: {{ event.description }}</p>
+                    <p>Created By: {{ event.created_by.username }}</p>
+                    <p>Location: {{ event.location }}</p>
+                    <img src="{{ event.image.url }}" alt="{{ event.name }}">
+                    </li>
+                    {% endfor %}</ul>
+                {% endif %}
+            </main>
+        </div>
+    </div>
+{% endblock %}

@@ -1,24 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
+from MainPage.models import *
 
 
-# Create your models here.
-
-class UserLoginCredentials(models.Model):
-    userName = models.CharField(max_length=50, blank=False, null=False)
-    userPassword = models.CharField(max_length=10, blank=False, null=False)
-    userEmail = models.EmailField(blank=False, null=False)
-
-    def __str__(self):
-        return self.userName + " " + self.userEmail + " " + self.userPassword
-
-
-class UserProfileDetails(models.Model):
-    userName = models.ForeignKey(UserLoginCredentials, on_delete=models.CASCADE, default=None)
-    firstName = models.CharField(max_length=50, blank=False, null=False)
-    lastName = models.CharField(max_length=50, blank=False, null=False)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     city = models.CharField(max_length=50, blank=False, null=False)
     country = models.CharField(max_length=50, blank=False, null=False)
     profileImage = models.ImageField(upload_to='images/', default=None)
+    eventInterested = models.ForeignKey(EventCategory, on_delete=models.CASCADE, default=1)
 
-    def __str__(self):
-        return self.firstName + " " + self.lastName + " " + self.userName
+

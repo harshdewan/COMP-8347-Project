@@ -136,4 +136,6 @@ h1 {
 
 .search-form{
     text-align: center !important;
+    display: flex;
+    align-items: flex-end;
 }

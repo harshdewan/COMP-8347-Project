@@ -5,31 +5,42 @@ from .forms import EventCreationForm, EventRegistrationForm
 from django.http import HttpResponse
 from MainPage.models import Event
 from .models import EventRegistration
+import re
 
 
 # Create your views here.
+@login_required
 def event_creation(request):
     if request.method == 'POST':
-        form = EventCreationForm(request.POST)
+        form = EventCreationForm(request.POST, request.FILES)
         if form.is_valid():
             event_name = form.cleaned_data['event_name']
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
             event_description = form.cleaned_data['event_description']
+            location = form.cleaned_data.get('location')
+            image = form.cleaned_data.get('image')
+            event_category = form.cleaned_data['event_category']
 
             e = Event(name=event_name,
                       start_date=start_date,
                       end_date=end_date,
                       description=event_description,
-                      created_by=request.user)
+                      created_by=request.user,
+                      location=location,
+                      image=image,
+                      category=event_category)
             e.save()
 
             return redirect(to='MainPage:main_page')
         else:
-            return HttpResponse('Invalid Data')
-    return render(request, 'event_creation.html', {'form': EventCreationForm})
+            return render(request, 'event_creation.html', {'form': form})
+    else:
+        form = EventCreationForm()
+    return render(request, 'event_creation.html', {'form': form})
 
 
+@login_required
 def event_registration(request, event_id):
     if request.method == 'POST':
         form = EventRegistrationForm(request.POST)
@@ -40,6 +51,13 @@ def event_registration(request, event_id):
             email = form.cleaned_data['email']
             phone = form.cleaned_data['phone_no']
             event_obj = Event.objects.filter(id=event_id).first()
+
+            # Validate phone number format
+            phone_regex = r'^\+?1?\d{9,15}$'
+            if not re.match(phone_regex, phone):
+                form.add_error('phone_no', "Phone number must be entered in the format: '+999999999'.")
+                return render(request, 'event_registration.html', {'form': form, 'event_id': event_id})
+
             er = EventRegistration(event_id=event_id,
                                    user=request.user,
                                    name=name,
@@ -48,8 +66,7 @@ def event_registration(request, event_id):
             er.save()
 
             return redirect(to='MainPage:main_page')
-        else:
-            print(form.errors)
-            return HttpResponse('Invalid Data')
-    return render(request, 'event_registration.html', {'form': EventRegistrationForm,
+    else:
+        form = EventRegistrationForm()
+    return render(request, 'event_registration.html', {'form': form,
                                                        'event_id': event_id})

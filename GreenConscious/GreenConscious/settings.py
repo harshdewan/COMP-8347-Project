@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'Contact.apps.ContactConfig',
     'About.apps.AboutConfig',
     'userhistory.apps.UserhistoryConfig',
+    'community.apps.CommunityConfig',
+    'VolunteerMatching.apps.VolunteermatchingConfig',
 ]
 
 JSON_ENCODER  = 'userhistory.utils.CustomJSONEncoder'

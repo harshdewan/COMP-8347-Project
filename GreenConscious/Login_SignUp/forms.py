@@ -4,21 +4,22 @@
 
 from django import forms
 
-from Login_SignUp.models import UserLoginCredentials
-
-
-#from models import UserProfileDetails, UserLoginCredentials
+from django.contrib.auth.models import User
 
 
 class signupForm(forms.ModelForm):
-    userPassword = forms.CharField(widget=forms.PasswordInput(), label= 'Password', max_length=10)
+    password = forms.CharField(widget=forms.PasswordInput(), label='Password', max_length=10)
+
     class Meta:
-        model = UserLoginCredentials
-        fields = ['userName', 'userEmail', 'userPassword']
+        model = User
+        fields = ['username', 'email', 'password']
+        help_texts = {
+            'username': None,
+        }
         labels = {
-            'userName' : 'Username',
-            'userEmail' : 'Email',
-            'userPassword' : 'Password'
+            'username': 'Username',
+            'email': 'Email',
+            'password': 'Password'
         }
 
 
@@ -34,3 +35,13 @@ class profileForm(forms.Form):
     userCountry = forms.CharField(max_length=50, label="Country")
 
 
+class PasswordChangeForm(forms.Form):
+    oldPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input-group'}), label="Old Password")
+    newPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input-group'}), label="New Password")
+    confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input-group'}), label="Confirm Password")
+
+
+class ResetPasswordForm(forms.Form):
+    userName = forms.CharField(max_length=50, label="Username")
+    newPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input-group'}), label="New Password")
+    confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input-group'}), label="Confirm Password")

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Conscious - An Event Creation Site</title>
+
+    <!-- Link CSS file -->
+    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/homepagestyle.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <a class="navbar-brand text-white" href="{% url 'Login_SignUp:homePage' %}">Green Conscious</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'Login_SignUp:loginPage' %}">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'Login_SignUp:signupPage' %}">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container text-center mt-5">
+        {% block content %}
+        <h1 class="display-4 text-success">Green Conscious</h1>
+        <p class="lead">An Event Creation Site</p>
+        <a href="{% url 'Login_SignUp:signupPage' %}" class="btn btn-outline-success btn-lg">Get Started</a>
+        {% endblock %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
