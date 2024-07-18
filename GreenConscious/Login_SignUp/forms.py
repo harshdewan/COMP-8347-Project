@@ -6,6 +6,8 @@ from django import forms
 
 from django.contrib.auth.models import User
 
+from MainPage.models import EventCategory
+
 
 class signupForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), label='Password', max_length=10)
@@ -33,6 +35,11 @@ class profileForm(forms.Form):
     userLastName = forms.CharField(max_length=50, label="Last Name")
     userCity = forms.CharField(max_length=50, label="City")
     userCountry = forms.CharField(max_length=50, label="Country")
+    userEventInterested = forms.ModelChoiceField(
+        queryset=EventCategory.objects.all(),
+        label='Event Category',
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
 
 
 class PasswordChangeForm(forms.Form):

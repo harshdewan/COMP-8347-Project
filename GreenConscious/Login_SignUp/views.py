@@ -5,6 +5,8 @@ from Login_SignUp.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
+from MainPage.models import EventCategory
+
 
 def loginPage(request):
     if request.method == 'POST':
@@ -75,6 +77,7 @@ def profile(request):
                 userLastName = form.cleaned_data['userLastName']
                 userCity = form.cleaned_data['userCity']
                 userCountry = form.cleaned_data['userCountry']
+                userEventInterested = form.cleaned_data['userEventInterested']
                 userDetails.first_name = userFirstName
                 userDetails.last_name = userLastName
                 try:
@@ -83,16 +86,21 @@ def profile(request):
                     userProfile = None
 
                 if userProfile is None:
+                    print("user: userEventInterested: ", userEventInterested)
+                    eventCategory = EventCategory.objects.get(name=userEventInterested)
+                    print("eventCategoryobject: ", eventCategory.__str__())
                     userProfile = UserProfile.objects.create(user=userDetails,
                                                              city=userCity, country=userCountry,
-                                                             profileImage='')
+                                                             profileImage='', eventInterested=eventCategory)
                     userDetails.save()
                     userProfile.save()
                 else:
+                    eventCategory = EventCategory.objects.get(name=userEventInterested)
+                    print("eventCategoryobject: ", eventCategory.__str__())
                     userDetails.save()
                     userProfile = (
                         UserProfile.objects.filter(user=userDetails).update(city=userCity, country=userCountry,
-                                                                            profileImage=''))
+                                                                            profileImage='',eventInterested=eventCategory))
 
                 return redirect('MainPage:main_page')
         else:
@@ -112,11 +120,14 @@ def profile(request):
             else:
                 print("firstname: ", userprofile_details.user.first_name)
                 print("lastname: ", userprofile_details.user.last_name)
+                print("userEventInterestedObject", EventCategory.objects.get(id=userprofile_details.eventInterested.id))
+                print("userEventInterestedName", EventCategory.objects.get(id=userprofile_details.eventInterested.id).name)
                 initial_data = {
                     'userFirstName': userprofile_details.user.first_name,
                     'userLastName': userprofile_details.user.last_name,
                     'userCity': userprofile_details.city,
                     'userCountry': userprofile_details.country,
+                    'userEventInterested': EventCategory.objects.get(id=userprofile_details.eventInterested.id)
                 }
                 form = profileForm(initial=initial_data)
             context = {
