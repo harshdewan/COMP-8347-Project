@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+from django.conf import global_settings
+from django.core.serializers.json import DjangoJSONEncoder
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +44,13 @@ INSTALLED_APPS = [
     'MainPage.apps.MainPageConfig',
     "Login_SignUp.apps.LoginSignupConfig",
     'EventsPage.apps.EventspageConfig',
+    'Contact.apps.ContactConfig',
+    'About.apps.AboutConfig',
+    'userhistory.apps.UserhistoryConfig',
 ]
+
+JSON_ENCODER  = 'userhistory.utils.CustomJSONEncoder'
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
+    'userhistory.middleware.UserHistoryMiddleware',
 ]
 
 ROOT_URLCONF = 'GreenConscious.urls'
