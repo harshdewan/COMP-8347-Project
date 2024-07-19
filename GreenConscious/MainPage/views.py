@@ -5,6 +5,8 @@ from django.utils import timezone
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from EventsPage.forms import EventCreationForm
 from MainPage.models import Event, EventCategory
 from django.db.models import Q
 from django.http import HttpResponse
@@ -21,7 +23,8 @@ def parse_custom_date(date_str):
 def main_page(request):
     if not request.user.is_authenticated:
         return redirect('Login_SignUp:homePage')
-    print("inside main_page for view function", "<", request.user.username,">",  "<",request.user.is_authenticated,">")
+    print("inside main_page for view function", "<", request.user.username, ">", "<", request.user.is_authenticated,
+          ">")
     query = request.GET.get('q')
     category_id = request.GET.get('category')
     events_list = Event.objects.all()
@@ -63,7 +66,16 @@ def main_page(request):
 
 def event_detail(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
-    return render(request, 'MainPage/event_detail.html', {'event': event})
+    disableEventEditButton = True
+    eventDetail = Event.objects.get(id=event_id)
+    eventCreatorUsername = eventDetail.created_by.username
+    print("eventCreatorUsername: ", eventCreatorUsername)
+    print("request.user.username: ", request.user.username)
+    if request.user.username == eventCreatorUsername:
+        disableEventEditButton = False
+    print("disableEventEditButton: ", disableEventEditButton)
+    return render(request, 'MainPage/event_detail.html',
+                  {'event': event, 'disableEventEditButton': disableEventEditButton})
 
 
 def past_events(request):
@@ -83,3 +95,44 @@ def past_events(request):
         events = paginator.page(paginator.num_pages)
 
     return render(request, 'MainPage/past_events.html', {'events': events})
+
+
+def event_update(request, event_id):
+    if not request.user.is_authenticated:
+        return redirect('Login_SignUp:homePage')
+    print("update event request received!")
+    if request.method == 'POST':
+        form = EventCreationForm(request.POST, request.FILES)
+        if form.is_valid():
+            updatedEventName = form.cleaned_data['event_name']
+            updatedStartDate = form.cleaned_data['start_date']
+            updatedEndDate = form.cleaned_data['end_date']
+            updatedEventDescription = form.cleaned_data['event_description']
+            updatedLocation = form.cleaned_data.get('location')
+            updatedImage = form.cleaned_data.get('image')
+            updatedEventCategory = form.cleaned_data['event_category']
+            e = Event.objects.filter(id=event_id).update(name=updatedEventName,
+                                                         start_date=updatedStartDate,
+                                                         end_date=updatedEndDate,
+                                                         description=updatedEventDescription,
+                                                         created_by=request.user,
+                                                         location=updatedLocation,
+                                                         image=updatedImage,
+                                                         category=updatedEventCategory)
+            print("this code is executed inside new event edit")
+            return redirect(to='MainPage:event_detail', event_id=event_id)
+        else:
+            return render(request, 'MainPage/event_update.html', {'form': form, 'given_event_id' : event_id})
+    else:
+        currentEventDetails = Event.objects.get(id=event_id)
+        formDetails = {
+            'event_name':currentEventDetails.name,
+            'start_date':currentEventDetails.start_date,
+            'end_date': currentEventDetails.end_date,
+            'event_description': currentEventDetails.description,
+            'location': currentEventDetails.location,
+            'image': currentEventDetails.image,
+            'event_category': currentEventDetails.category
+        }
+        form = EventCreationForm(initial=formDetails)
+        return render(request, 'MainPage/event_update.html', {'form': form, 'given_event_id': event_id})

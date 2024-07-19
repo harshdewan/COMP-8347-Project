@@ -32,6 +32,10 @@
         color: #4CAF50;
         border: 2px solid #4CAF50;
     }
+
+    .disabled-btn {
+        display: none;
+    }
 </style>
 {% endblock %}
 
@@ -62,6 +66,11 @@
     <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
     <div>
         <a href="{% url 'MainPage:main_page' %}" class="btn btn-primary back-button">Back to Events</a>
+        {% if disableEventEditButton %}
+            <a href="{% url 'MainPage:event_details_update' event_id=event.id %}" class="btn btn-primary back-button disabled-btn" >Edit Event Details</a>
+        {% else %}
+            <a href="{% url 'MainPage:event_details_update' event_id=event.id %}" class="btn btn-primary back-button">Edit Event Details</a>
+        {% endif %}
         <a href="{% url 'EventsPage:event_registration' event.id %}" class="btn btn-primary back-button"
         style="margin-left: 10px">Register</a>
     </div>
