@@ -62,17 +62,40 @@
     {% if event.image %}
         <img src="{{ event.image.url }}" alt="{{ event.name }}" class="event-image">
     {% endif %}
+    <p><strong>Category:</strong> {{ event.category }}</p>
     <p><strong>Location:</strong> {{ event.location }}</p>
     <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
     <div>
         <a href="{% url 'MainPage:main_page' %}" class="btn btn-primary back-button">Back to Events</a>
-        {% if disableEventEditButton %}
-            <a href="{% url 'MainPage:event_details_update' event_id=event.id %}" class="btn btn-primary back-button disabled-btn" >Edit Event Details</a>
+        {% if disable_flag %}
+            <a href="{% url 'MainPage:event_details_update' event_id=event.id %}" 
+               class="btn btn-primary back-button disabled-btn"
+               style="margin-left: 10px">Edit Event Details</a>
+            <form action="{% url 'MainPage:event_delete' event_id=event.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary back-button disabled-btn"
+                style="margin-left: 10px">Delete Event</button>
+            </form>
         {% else %}
-            <a href="{% url 'MainPage:event_details_update' event_id=event.id %}" class="btn btn-primary back-button">Edit Event Details</a>
+            <a href="{% url 'MainPage:event_details_update' event_id=event.id %}" 
+               class="btn btn-primary back-button"
+               style="margin-left: 10px">Edit Event Details</a>
+            <form action="{% url 'MainPage:event_delete' event_id=event.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary back-button" id="delete-button"
+                style="margin-left: 10px">Delete Event</button>
+            </form>
         {% endif %}
         <a href="{% url 'EventsPage:event_registration' event.id %}" class="btn btn-primary back-button"
         style="margin-left: 10px">Register</a>
     </div>
 </div>
+    
+    <script>
+        document.getElementById('delete-button').addEventListener('click', function(event) {
+            if (!confirm('Are you sure you want to delete this event?')) {
+                event.preventDefault(); // Prevents the default action (navigation to the delete URL)
+            }
+        });
+    </script>
 {% endblock %}
