@@ -152,7 +152,13 @@
     </div>
     <div class="container">
         <div class="profile-image">
-            <img src="{% static 'images/{{ form.userProfileImage }}' %}" alt="Profile Image">
+            {% if userProfile %}
+                <p>imageobject coming</p>
+                {% if userProfile.profileImage %}
+                    <p>Image URL: {{ userProfile.profileImage.url }}</p>
+                    <img src="{{ userProfile.profileImage.url }}" alt="Profile Image">
+                {% endif %}
+            {% endif %}
         </div>
         <div class="profile-details">
             <h1>User Profile</h1>
