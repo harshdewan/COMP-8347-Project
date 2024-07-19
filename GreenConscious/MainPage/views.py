@@ -100,39 +100,38 @@ def past_events(request):
 def event_update(request, event_id):
     if not request.user.is_authenticated:
         return redirect('Login_SignUp:homePage')
-    print("update event request received!")
+
+    event = get_object_or_404(Event, id=event_id)
+
     if request.method == 'POST':
         form = EventCreationForm(request.POST, request.FILES)
         if form.is_valid():
-            updatedEventName = form.cleaned_data['event_name']
-            updatedStartDate = form.cleaned_data['start_date']
-            updatedEndDate = form.cleaned_data['end_date']
-            updatedEventDescription = form.cleaned_data['event_description']
-            updatedLocation = form.cleaned_data.get('location')
-            updatedImage = form.cleaned_data.get('image')
-            updatedEventCategory = form.cleaned_data['event_category']
-            e = Event.objects.filter(id=event_id).update(name=updatedEventName,
-                                                         start_date=updatedStartDate,
-                                                         end_date=updatedEndDate,
-                                                         description=updatedEventDescription,
-                                                         created_by=request.user,
-                                                         location=updatedLocation,
-                                                         image=updatedImage,
-                                                         category=updatedEventCategory)
-            print("this code is executed inside new event edit")
-            return redirect(to='MainPage:event_detail', event_id=event_id)
+            event.name = form.cleaned_data['event_name']
+            event.start_date = form.cleaned_data['start_date']
+            event.end_date = form.cleaned_data['end_date']
+            event.description = form.cleaned_data['event_description']
+            event.location = form.cleaned_data['location']
+            event.category = form.cleaned_data['event_category']
+            if 'image-clear' in request.POST:
+                event.image.delete()
+                event.image = None
+            elif 'image' in request.FILES:
+                event.image = request.FILES['image']
+            event.save()
+
+            return redirect('MainPage:event_detail', event_id=event.id)
         else:
-            return render(request, 'MainPage/event_update.html', {'form': form, 'given_event_id' : event_id})
+            return render(request, 'MainPage/event_update.html', {'form': form,
+                                                                  'given_event_id': event_id})
     else:
-        currentEventDetails = Event.objects.get(id=event_id)
-        formDetails = {
-            'event_name':currentEventDetails.name,
-            'start_date':currentEventDetails.start_date,
-            'end_date': currentEventDetails.end_date,
-            'event_description': currentEventDetails.description,
-            'location': currentEventDetails.location,
-            'image': currentEventDetails.image,
-            'event_category': currentEventDetails.category
-        }
-        form = EventCreationForm(initial=formDetails)
-        return render(request, 'MainPage/event_update.html', {'form': form, 'given_event_id': event_id})
+        form = EventCreationForm(initial={
+            'event_name': event.name,
+            'start_date': event.start_date,
+            'end_date': event.end_date,
+            'event_description': event.description,
+            'location': event.location,
+            'image': event.image,
+            'event_category': event.category,
+        })
+        return render(request, 'MainPage/event_update.html', {'form': form,
+                                                              'given_event_id': event_id})
