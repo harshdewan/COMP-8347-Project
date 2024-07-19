@@ -25,8 +25,6 @@ def parse_custom_date(date_str):
 def main_page(request):
     if not request.user.is_authenticated:
         return redirect('Login_SignUp:homePage')
-    print("inside main_page for view function", "<", request.user.username, ">", "<", request.user.is_authenticated,
-          ">")
     query = request.GET.get('q')
     category_id = request.GET.get('category')
     events_list = Event.objects.all()
@@ -100,9 +98,7 @@ def past_events(request):
 def event_update(request, event_id):
     if not request.user.is_authenticated:
         return redirect('Login_SignUp:homePage')
-
     event = get_object_or_404(Event, id=event_id)
-
     if request.method == 'POST':
         form = EventCreationForm(request.POST, request.FILES)
         if form.is_valid():
@@ -143,23 +139,9 @@ def myEvents(request):
         return redirect('Login_SignUp:homePage')
     eventsToDisplay = False
     eventsCreated = Event.objects.all().filter(created_by=request.user)
-    print("eventsCreated: ", len(eventsCreated))
-    for event in eventsCreated:
-        print("event: ", event.__str__())
     eventsRegistered = EventRegistration.objects.all().filter(user=request.user)
     eventsToDisplay = eventsCreated or eventsRegistered
     return render(request, template_name='MainPage/myevents.html', context={'eventsToDisplay':eventsToDisplay, 'eventsCreated': eventsCreated, 'eventsRegistered':eventsRegistered})
-        form = EventCreationForm(initial={
-            'event_name': event.name,
-            'start_date': event.start_date,
-            'end_date': event.end_date,
-            'event_description': event.description,
-            'location': event.location,
-            'image': event.image,
-            'event_category': event.category,
-        })
-        return render(request, 'MainPage/event_update.html', {'form': form,
-                                                              'given_event_id': event_id})
 
 
 def event_delete(request, event_id):
