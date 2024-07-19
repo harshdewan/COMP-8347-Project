@@ -15,6 +15,14 @@ body {
     z-index: 1000;
 }
 
+
+.footer .col-md-4 {
+    color: green;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
 .navbar .name {
     color: white;
     font-size: 20px;

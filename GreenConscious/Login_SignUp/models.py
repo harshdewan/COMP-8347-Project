@@ -11,3 +11,17 @@ class UserProfile(models.Model):
     eventInterested = models.ForeignKey(EventCategory, on_delete=models.CASCADE, default=1)
 
 
+class SecurityQuestion(models.Model):
+    question_text = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.question_text
+
+
+class SecurityAnswer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(SecurityQuestion, on_delete=models.CASCADE)
+    answer = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.question.question_text}"
