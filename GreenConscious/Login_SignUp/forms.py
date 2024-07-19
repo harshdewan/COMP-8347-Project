@@ -6,6 +6,8 @@ from django import forms
 
 from django.contrib.auth.models import User
 
+from Login_SignUp.models import SecurityQuestion
+
 from MainPage.models import EventCategory
 
 
@@ -53,5 +55,20 @@ class PasswordChangeForm(forms.Form):
 
 class ResetPasswordForm(forms.Form):
     userName = forms.CharField(max_length=50, label="Username")
+
+
+class ResetPasswordNextForm(forms.Form):
+    userName = forms.CharField(max_length=50, label="Username")
     newPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input-group'}), label="New Password")
     confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input-group'}), label="Confirm Password")
+    answer = forms.CharField(max_length=255, label="Answer")
+    question_id = forms.IntegerField(widget=forms.HiddenInput())
+
+
+class SecurityQuestionForm(forms.Form):
+    question1 = forms.ModelChoiceField(queryset=SecurityQuestion.objects.all(), label="Question 1")
+    answer1 = forms.CharField(max_length=255, label="Answer 1")
+    question2 = forms.ModelChoiceField(queryset=SecurityQuestion.objects.all(), label="Question 2")
+    answer2 = forms.CharField(max_length=255, label="Answer 2")
+    question3 = forms.ModelChoiceField(queryset=SecurityQuestion.objects.all(), label="Question 3")
+    answer3 = forms.CharField(max_length=255, label="Answer 3")
