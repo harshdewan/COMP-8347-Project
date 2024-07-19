@@ -1,6 +1,9 @@
 from django import forms
 from django.core.exceptions import ValidationError
+import datetime
 from django.utils import timezone
+from pygments.lexer import default
+
 from MainPage.models import EventCategory
 
 
@@ -15,7 +18,7 @@ class EventCreationForm(forms.Form):
                                                                      'placeholder': 'Please enter event description'}))
     start_date = forms.DateField(required=True,
                                  label='Event Start Date',
-                                 widget=forms.SelectDateWidget(attrs={'class': 'dateTime_field'}))
+                                 widget=forms.SelectDateWidget(attrs={'class': 'dateTime_field'}), initial=datetime.date.today)
     end_date = forms.DateField(required=True,
                                label='Event End Date',
                                widget=forms.SelectDateWidget(attrs={'class': 'dateTime_field', }))
