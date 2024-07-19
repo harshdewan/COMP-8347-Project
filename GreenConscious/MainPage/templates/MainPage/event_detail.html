@@ -62,11 +62,12 @@
     {% if event.image %}
         <img src="{{ event.image.url }}" alt="{{ event.name }}" class="event-image">
     {% endif %}
+    <p><strong>Category:</strong> {{ event.category }}</p>
     <p><strong>Location:</strong> {{ event.location }}</p>
     <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
     <div>
         <a href="{% url 'MainPage:main_page' %}" class="btn btn-primary back-button">Back to Events</a>
-        {% if disableEventEditButton %}
+        {% if disable_flag %}
             <a href="{% url 'MainPage:event_details_update' event_id=event.id %}" class="btn btn-primary back-button disabled-btn" >Edit Event Details</a>
         {% else %}
             <a href="{% url 'MainPage:event_details_update' event_id=event.id %}" class="btn btn-primary back-button">Edit Event Details</a>

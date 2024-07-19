@@ -66,16 +66,14 @@ def main_page(request):
 
 def event_detail(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
-    disableEventEditButton = True
-    eventDetail = Event.objects.get(id=event_id)
-    eventCreatorUsername = eventDetail.created_by.username
-    print("eventCreatorUsername: ", eventCreatorUsername)
-    print("request.user.username: ", request.user.username)
-    if request.user.username == eventCreatorUsername:
-        disableEventEditButton = False
-    print("disableEventEditButton: ", disableEventEditButton)
+    disable_flag = True
+    event_creator_user_id = event.created_by.id
+
+    if request.user.id == event_creator_user_id:
+        disable_flag = False
+
     return render(request, 'MainPage/event_detail.html',
-                  {'event': event, 'disableEventEditButton': disableEventEditButton})
+                  {'event': event, 'disable_flag': disable_flag})
 
 
 def past_events(request):
