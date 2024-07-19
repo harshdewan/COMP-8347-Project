@@ -12,27 +12,26 @@ from MainPage.models import EventCategory
 
 def loginPage(request):
     if request.method == 'POST':
-        print("post section login")
         form = loginForm(request.POST)
         if form.is_valid():
             userName = form.cleaned_data['loginUserName']
             userPassword = form.cleaned_data['loginPassword']
-            print("userName: ", userName,  " userPassword: ", userPassword)
             try:
                 checkUserName = User.objects.get(username=userName)
                 user = authenticate(request, username=userName, password=userPassword)
                 if user is not None:
                     login(request, user)
-                    print("after login function")
                     return redirect('MainPage:main_page')
                 else:
                     return render(request, template_name='login.html', context={'form': form,
                                                                                 'invalidMessage': 'Invalid Username/Password. Please try again'})
             except User.DoesNotExist:
-                return render(request, template_name='login.html', context={'form': form, 'invalidMessage': 'Invalid Username/Password. Please try again'})
+                return render(request, template_name='login.html',
+                              context={'form': form, 'invalidMessage': 'Invalid Username/Password. Please try again'})
 
         else:
-            return render(request, template_name='login.html', context={'form': form, 'invalidMessage': 'Unable to proceed. Please try again!'})
+            return render(request, template_name='login.html',
+                          context={'form': form, 'invalidMessage': 'Unable to proceed. Please try again!'})
     else:
         form = loginForm()
         return render(request, template_name='login.html', context={'form': form, 'invalidMessage': ''})
@@ -61,7 +60,8 @@ def signupPage(request):
             except Exception as exception:
                 return HttpResponse(f'Signup failed: {exception}')
         else:
-            return render(request, template_name='signup.html', context={'form': form, 'invalidMessage':'Unable to proceed. Please try again'})
+            return render(request, template_name='signup.html',
+                          context={'form': form, 'invalidMessage': 'Unable to proceed. Please try again'})
     else:
         form = signupForm()
         return render(request, template_name='signup.html', context={'form': form})
@@ -70,7 +70,6 @@ def signupPage(request):
 def profile(request):
     if request.user.is_authenticated:
         inputUserName = request.user.username
-        print("called received in profile: ", inputUserName)
         userDetails = User.objects.get(username=inputUserName)
         if request.method == 'POST':
             form = profileForm(request.POST, request.FILES)
@@ -80,33 +79,36 @@ def profile(request):
                 userCity = form.cleaned_data['userCity']
                 userCountry = form.cleaned_data['userCountry']
                 userEventInterested = form.cleaned_data['userEventInterested']
-                userProfileImage = form.cleaned_data.get('userProfileImage')
                 userDetails.first_name = userFirstName
                 userDetails.last_name = userLastName
+                eventCategory = EventCategory.objects.get(name=userEventInterested)
                 try:
                     userProfile = UserProfile.objects.get(user=userDetails)
-                except Exception:
+                except UserProfile.DoesNotExist:
                     userProfile = None
 
                 if userProfile is None:
-                    print("user: userEventInterested: ", userEventInterested)
-                    eventCategory = EventCategory.objects.get(name=userEventInterested)
-                    print("eventCategoryobject: ", eventCategory.__str__())
-                    print("new userProfileImage: ", userProfileImage)
+                    userProfileImage = request.FILES['userProfileImage']
                     userProfile = UserProfile.objects.create(user=userDetails,
                                                              city=userCity, country=userCountry,
-                                                             profileImage=userProfileImage, eventInterested=eventCategory)
+                                                             profileImage=userProfileImage,
+                                                             eventInterested=eventCategory)
                     userDetails.save()
                     userProfile.save()
                 else:
-                    eventCategory = EventCategory.objects.get(name=userEventInterested)
-                    print("eventCategoryobject: ", eventCategory.__str__())
-                    print("update userProfileImage: ", userProfileImage)
+                    if 'userProfileImage-clear' in request.POST:
+                        userProfile.profileImage.delete()
+                        userProfile.profileImage = None
+                    elif 'userProfileImage' in request.FILES:
+                        userProfileImage = request.FILES['userProfileImage']
+                        userProfile.profileImage.delete()
+                        userProfile.profileImage = None
+                        userProfile.profileImage = userProfileImage
                     userDetails.save()
-                    userProfile = (
-                        UserProfile.objects.filter(user=userDetails).update(city=userCity, country=userCountry,
-                                                                            profileImage=userProfileImage, eventInterested=eventCategory))
-
+                    userProfile.city=userCity
+                    userProfile.country=userCountry
+                    userProfile.eventInterested=eventCategory
+                    userProfile.save()
                 return redirect('MainPage:main_page')
         else:
             try:
@@ -121,14 +123,10 @@ def profile(request):
                     'userCity': "",
                     'userCountry': "",
                     'userEventInterested': "",
-                    'userProfileImage': "default_profile.png",
+                    'userProfileImage': "",
                 }
                 form = profileForm(initial=initial_data)
             else:
-                print("firstname: ", userprofile_details.user.first_name)
-                print("lastname: ", userprofile_details.user.last_name)
-                print("userEventInterestedObject", EventCategory.objects.get(id=userprofile_details.eventInterested.id))
-                print("userEventInterestedName", EventCategory.objects.get(id=userprofile_details.eventInterested.id).name)
                 initial_data = {
                     'userFirstName': userprofile_details.user.first_name,
                     'userLastName': userprofile_details.user.last_name,
@@ -141,6 +139,7 @@ def profile(request):
             context = {
                 'form': form,
                 'userDetails': userDetails,
+                'userProfile': userprofile_details
             }
             return render(request, 'profile.html', context)
     else:
@@ -163,7 +162,6 @@ def change_password(request):
                         user.set_password(newpassword)
                         user.save()
                         return render(request, template_name="passwordchangesuccess.html", context={})
-                        #return redirect('Login_SignUp:password_change_success')
                 else:
                     return HttpResponse('Incorrect old password, Please try again')
             else:
@@ -173,11 +171,6 @@ def change_password(request):
             return render(request, template_name='changepassword.html', context={'form': form})
     else:
         return redirect('Login_SignUp:homePage')
-
-
-def change_profile_image_view(request, inputUserName):
-    # Handle profile image change logic here
-    return HttpResponse("Change Profile Image Page")  # Replace with your logic
 
 
 def homePage(request):
@@ -200,8 +193,6 @@ def password_reset(request):
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
                 return HttpResponse('Incorrect username, Please try again')
-
-            # Redirect to a new page for step 2
             return redirect('Login_SignUp:passwordresetnext', user_id=user.id)
         else:
             return HttpResponse('Invalid Data, Please try again')
@@ -260,6 +251,7 @@ def password_reset_next(request, user_id):
             'user_id': user_id,
             'security_question': security_question,
         })
+
 
 def add_security_questions(request, user_id):
     user = User.objects.get(id=user_id)

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}My Events{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'MainPage/style.css' %}">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+.left {
+  width: 25%;
+}
+
+.right {
+  width: 75%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.no-events-message {
+    text-align: center;
+    margin-top: 20px;
+    font-style: italic;
+    color: #999;
+}
+
+.column {
+    margin: 20px;
+}
+
+
+
+</style>
+{% endblock %}
+
+{% block navbar-content%}
+    <a href="{% url 'MainPage:main_page' %}">
+        <div class="name">Green Conscious</div>
+    </a>
+    <div class="login-register">
+        <a href="{% url 'Login_SignUp:profile_view' %}">
+            <button>My Profile</button>
+        </a>
+         <a href="{% url 'Login_SignUp:logoutPage' %}">
+            <button>Log Out</button>
+        </a>
+    </div>
+{%  endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="column" style="background-color:#ffffff;">
+    {% if eventsToDisplay %}
+        
+        <h1>Created Events</h1>
+        {% if eventsCreated %}
+            {% for event in eventsCreated %}
+              <div class="event">
+                <h2><a href="{% url 'MainPage:event_detail' event.id %}">{{ event.name }}</a></h2>
+                <p><strong>Start Date:</strong> {{ event.start_date }}</p>
+                <p><strong>End Date:</strong> {{ event.end_date }}</p>
+                <p><strong>Description:</strong> {{ event.description }}</p>
+                {% if event.image %}
+                  <img src="{{ event.image.url }}" alt="{{ event.name }}">
+                {% endif %}
+                <p><strong>Category:</strong> {{ event.category }}</p>
+                <p><strong>Location:</strong> {{ event.location }}</p>
+                <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
+              </div>
+            {% endfor %}
+        {% else %}
+            <p><p class="no-events-message">No events found.</p></p>
+        {% endif %} 
+        
+        <h1>Registered Events</h1>
+        {% if eventsRegistered %}
+            {% for regEvent in eventsRegistered %}
+              <div class="event">
+                <h2><a href="{% url 'MainPage:event_detail' regEvent.event.id %}">{{ regEvent.event.name }}</a></h2>
+                <p><strong>Start Date:</strong> {{ regEvent.event.start_date }}</p>
+                <p><strong>End Date:</strong> {{ regEvent.event.end_date }}</p>
+                <p><strong>Description:</strong> {{ regEvent.event.description }}</p>
+                {% if event.image %}
+                  <img src="{{ regEvent.event.image.url }}" alt="{{ regEvent.event.name }}">
+                {% endif %}
+                <p><strong>Category:</strong> {{ regEvent.event.category }}</p>
+                <p><strong>Location:</strong> {{ regEvent.event.location }}</p>
+                <p><strong>Created By:</strong> {{ regEvent.event.created_by.username }}</p>
+              </div>
+            {% endfor %}
+        {% else %}
+            <p><p class="no-events-message">No events found.</p></p>
+        {% endif %}
+    {% else %}
+        <p class="no-events-message">No events found.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
