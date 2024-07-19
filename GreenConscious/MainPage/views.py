@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from EventsPage.forms import EventCreationForm
+from EventsPage.models import EventRegistration
 from MainPage.models import Event, EventCategory
 from django.db.models import Q
 from django.http import HttpResponse
@@ -136,3 +137,16 @@ def event_update(request, event_id):
         }
         form = EventCreationForm(initial=formDetails)
         return render(request, 'MainPage/event_update.html', {'form': form, 'given_event_id': event_id})
+
+
+def myEvents(request):
+    if not request.user.is_authenticated:
+        return redirect('Login_SignUp:homePage')
+    eventsToDisplay = False
+    eventsCreated = Event.objects.all().filter(created_by=request.user)
+    print("eventsCreated: ", len(eventsCreated))
+    for event in eventsCreated:
+        print("event: ", event.__str__())
+    eventsRegistered = EventRegistration.objects.all().filter(user=request.user)
+    eventsToDisplay = eventsCreated or eventsRegistered
+    return render(request, template_name='MainPage/myevents.html', context={'eventsToDisplay':eventsToDisplay, 'eventsCreated': eventsCreated, 'eventsRegistered':eventsRegistered})
