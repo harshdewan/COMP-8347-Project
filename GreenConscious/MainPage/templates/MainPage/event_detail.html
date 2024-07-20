@@ -86,8 +86,17 @@
                 style="margin-left: 10px">Delete Event</button>
             </form>
         {% endif %}
-        <a href="{% url 'EventsPage:event_registration' event.id %}" class="btn btn-primary back-button"
-        style="margin-left: 10px">Register</a>
+    
+        {% if register_flag %}
+            <a href="{% url 'EventsPage:event_registration' event.id %}" 
+               class="btn btn-primary back-button disabled-btn"
+               style="margin-left: 10px">Register</a>
+        {% else %}
+            <a href="{% url 'EventsPage:event_registration' event.id %}" 
+               class="btn btn-primary back-button"
+               style="margin-left: 10px">Register</a>
+        {% endif %}
+        
     </div>
 </div>
     

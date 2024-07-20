@@ -72,8 +72,14 @@ def event_detail(request, event_id):
     if request.user.id == event_creator_user_id:
         disable_flag = False
 
+    is_creator = event.created_by == request.user
+
+    is_registered = EventRegistration.objects.filter(event=event, user=request.user).exists()
+
+    register_flag = is_creator or is_registered
+
     return render(request, 'MainPage/event_detail.html',
-                  {'event': event, 'disable_flag': disable_flag})
+                  {'event': event, 'disable_flag': disable_flag, 'register_flag': register_flag})
 
 
 def past_events(request):
@@ -120,18 +126,17 @@ def event_update(request, event_id):
             return render(request, 'MainPage/event_update.html', {'form': form,
                                                                   'given_event_id': event_id})
     else:
-        currentEventDetails = Event.objects.get(id=event_id)
-        formDetails = {
-            'event_name':currentEventDetails.name,
-            'start_date':currentEventDetails.start_date,
-            'end_date': currentEventDetails.end_date,
-            'event_description': currentEventDetails.description,
-            'location': currentEventDetails.location,
-            'image': currentEventDetails.image,
-            'event_category': currentEventDetails.category
-        }
-        form = EventCreationForm(initial=formDetails)
-        return render(request, 'MainPage/event_update.html', {'form': form, 'given_event_id': event_id})
+        form = EventCreationForm(initial={
+            'event_name': event.name,
+            'start_date': event.start_date,
+            'end_date': event.end_date,
+            'event_description': event.description,
+            'location': event.location,
+            'image': event.image,
+            'event_category': event.category,
+        })
+        return render(request, 'MainPage/event_update.html', {'form': form,
+                                                              'given_event_id': event_id})
 
 
 def myEvents(request):
