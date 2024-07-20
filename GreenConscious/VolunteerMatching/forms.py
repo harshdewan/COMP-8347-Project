@@ -1,4 +1,5 @@
 # forms.py in VolunteerMatching app
+import datetime
 
 from django import forms
 from Login_SignUp.models import UserProfile
@@ -11,4 +12,4 @@ class VolunteerMatchingForm(forms.Form):
         label='Select Interest',
         widget=forms.Select(attrs={'class': 'form-control'})
     )
-    date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    date = forms.DateField(required=True, widget=forms.DateInput(attrs={'type': 'date'}), initial=datetime.date.today)
