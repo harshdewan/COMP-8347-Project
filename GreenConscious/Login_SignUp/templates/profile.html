@@ -1,14 +1,15 @@
-{% load static %}
+<!-- profile.html -->
+{% load static %}  <!-- Load static tag library -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'profilestyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="../../static/profilestyle.css">
     <style>
         .navbar {
             background-color: #4CAF50;
-            padding: 10px 20px;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -16,12 +17,11 @@
             top: 0;
             width: 100%;
             z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .navbar .name {
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
         }
 
@@ -37,101 +37,14 @@
             margin: 0 5px;
             cursor: pointer;
             border-radius: 5px;
-            font-size: 16px;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         .navbar .login-register button:hover {
             background-color: #45a049;
             color: white;
         }
-
-        .container {
-            max-width: 900px;
-            margin: 80px auto 20px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .profile-image img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #4CAF50;
-        }
-
-        .profile-details h1 {
-            color: #4CAF50;
-            text-align: center;
-        }
-
-        .profile-details form {
-            margin-top: 20px;
-        }
-
-        .profile-details label {
-            display: block;
-            margin-bottom: 5px;
-            color: #4CAF50;
-            font-weight: bold;
-        }
-
-        .profile-details input[type="text"],
-        .profile-details input[type="password"],
-        .profile-details input[type="submit"] {
-            width: calc(100% - 12px);
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .profile-details input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .profile-details input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        .profile-details a {
-            color: #4CAF50;
-            text-decoration: none;
-            margin-right: 10px;
-        }
-
-        .profile-details a:hover {
-            text-decoration: underline;
-        }
-
-        .my-events {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .my-events a {
-            color: white;
-            background-color: #4CAF50;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .my-events a:hover {
-            background-color: #45a049;
-        }
     </style>
+
 </head>
 <body>
     <div class="navbar">
@@ -142,7 +55,7 @@
             <a href="{% url 'Login_SignUp:change_password' %}">
                 <button>Change Password</button>
             </a>
-            <a href="{% url 'MainPage:main_page' %}">
+             <a href="{% url 'MainPage:main_page' %}">
                 <button>Home</button>
             </a>
             <a href="{% url 'Login_SignUp:logoutPage' %}">
@@ -151,34 +64,38 @@
         </div>
     </div>
     <div class="container">
-        <div class="profile-image">
-            {% if userProfile %}
-                {% if userProfile.profileImage %}
-                    <img src="{{ userProfile.profileImage.url }}" alt="Profile Image">
-                {% else %}
-                    <img src="/media/profile-images/default-profile-photo.png" alt="Profile Image">
-                {% endif %}
-            {% endif %}
-        </div>
-        <div class="profile-details">
-            <h1>User Profile</h1>
-            {% if userDetails %}
+        <div class="container1">
+            <div class="profile-heading">
+                <h1>User Profile</h1>
                 <p>Welcome, {{ userDetails.username }}</p>
                 <p>Email: {{ userDetails.email }}</p>
-                <form action="{% url 'Login_SignUp:profile_view' %}" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" value="Save Profile">
-                </form>
-            {% else %}
-                <form action="{% url 'Login_SignUp:profile_view' %}" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" value="Create Profile">
-                </form>
-            {% endif %}
-            <div class="my-events">
-                <a href="{% url 'MainPage:myevents' %}">My Events</a>
+            </div>
+            <div class="profile-image">
+                {% if userProfile %}
+                    {% if userProfile.profileImage %}
+                        <img src="{{ userProfile.profileImage.url }}" alt="Profile Image">
+                    {% else %}
+                        <img src="/media/profile-images/default-profile-photo.png" alt="Profile Image">
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="container2">
+            <div class="profile-details">
+                {% if userDetails %}
+                    <form action="{% url 'Login_SignUp:profile_view'  %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Save Profile">
+                    </form>
+                {% else %}
+                    <!-- Display form for the first time entry -->
+                    <form action="{% url 'Login_SignUp:profile_view' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Create Profile">
+                    </form>
+                {% endif %}
             </div>
         </div>
     </div>

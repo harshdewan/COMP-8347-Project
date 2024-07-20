@@ -33,18 +33,18 @@ class loginForm(forms.Form):
 
 
 class profileForm(forms.Form):
-    userProfileImage = forms.ImageField(required=False,
-                                        label='Profile Image',
-                                        widget=forms.ClearableFileInput())
-    userFirstName = forms.CharField(max_length=50, label="First Name")
+    userFirstName = forms.CharField(max_length=50, label="First Name", widget=forms.TextInput(attrs={'class': 'myProfileAttr'}))
     userLastName = forms.CharField(max_length=50, label="Last Name")
     userCity = forms.CharField(max_length=50, label="City")
     userCountry = forms.CharField(max_length=50, label="Country")
     userEventInterested = forms.ModelChoiceField(
         queryset=EventCategory.objects.all(),
         label='Event Category',
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget= forms.Select(attrs={'style': 'width:95%; height:35px; border: 1px solid #ccc;border-radius: 4px;'})
     )
+    userProfileImage = forms.ImageField(required=False,
+                                        label='Profile Image',
+                                        widget=forms.ClearableFileInput())
 
 
 class PasswordChangeForm(forms.Form):
