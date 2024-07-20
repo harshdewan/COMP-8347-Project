@@ -55,3 +55,16 @@ button{
     margin-top: 25px !important;
     padding: 20px !important;
 }
+
+.errorlist {
+    background-color: #cc0638 !important;
+    color: white !important;
+    padding: 10px !important;
+    list-style-type: none !important;
+    border-radius: 5px !important;
+    margin: 10px 0 !important;
+}
+
+.errorlist li {
+    margin: 0 !important;
+}

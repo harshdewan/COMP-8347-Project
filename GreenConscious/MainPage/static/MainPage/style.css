@@ -139,3 +139,16 @@ h1 {
     display: flex;
     align-items: flex-end;
 }
+
+.errorlist {
+    background-color: #cc0638 !important;
+    color: white !important;
+    padding: 10px !important;
+    list-style-type: none !important;
+    border-radius: 5px !important;
+    margin: 10px 0 !important;
+}
+
+.errorlist li {
+    margin: 0 !important;
+}
