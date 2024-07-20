@@ -1,6 +1,6 @@
 # views.py in VolunteerMatching app
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from Login_SignUp.models import UserProfile
 from .forms import VolunteerMatchingForm
@@ -8,6 +8,8 @@ from MainPage.models import Event, EventCategory
 
 
 def volunteer_matching(request):
+    if not request.user.is_authenticated:
+        return redirect('Login_SignUp:homePage')
     matched_events = None
     if request.method == 'POST':
         form = VolunteerMatchingForm(request.POST)
