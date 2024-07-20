@@ -12,14 +12,25 @@
     <a href="{% url 'MainPage:main_page' %}">
         <div class="name">Green Conscious</div>
     </a>
-    <div class="login-register">
+    {% if userLoggedIn %}
+        <div class="login-register">
         <a href="{% url 'Login_SignUp:profile_view' %}">
             <button>My Profile</button>
         </a>
-        <a href="{% url 'MainPage:main_page' %}">
+         <a href="{% url 'MainPage:main_page' %}">
             <button>Home</button>
         </a>
     </div>
+    {% else %}
+        <div class="login-register">
+        <a href="{% url 'Login_SignUp:loginPage' %}">
+            <button>Log In</button>
+        </a>
+         <a href="{% url 'Login_SignUp:signupPage' %}">
+            <button>Sign Up</button>
+        </a>
+    </div>
+    {% endif %}
 {%  endblock %}
 
 {% block content %}
