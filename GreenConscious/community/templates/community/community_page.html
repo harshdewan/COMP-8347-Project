@@ -29,8 +29,8 @@
     </a>
     {% if userLoggedIn %}
         <div class="login-register">
-        <a href="{% url 'Login_SignUp:profile_view' %}">
-            <button>My Profile</button>
+        <a href="{% url 'create_post' %}">
+            <button>Create Post</button>
         </a>
          <a href="{% url 'MainPage:main_page' %}">
             <button>Home</button>
@@ -52,8 +52,6 @@
 <div class="container">
     <header class="header">
         <br>
-        <a href="{% url 'create_post' %}" class="btn btn-primary">CREATE POST</a>
-        <br><br>
         <h1 class="heading">Discussion</h1>
     </header>
     <main class="main">
