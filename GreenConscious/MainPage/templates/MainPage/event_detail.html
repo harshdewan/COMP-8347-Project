@@ -96,14 +96,39 @@
                class="btn btn-primary back-button"
                style="margin-left: 10px">Register</a>
         {% endif %}
+    
+        {% if is_registered %}
+            <form action="{% url 'MainPage:cancel_registration' event.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary back-button" 
+                        style="margin-left: 10px" id="cancel-button">Cancel Registration</button>
+            </form>
+        {% else %}
+            <button class="btn btn-primary back-button disabled-btn" id="cancel-button" style="margin-left: 10px" disabled>Cancel Registration</button>
+        {% endif %}
         
     </div>
 </div>
     
     <script>
-        document.getElementById('delete-button').addEventListener('click', function(event) {
-            if (!confirm('Are you sure you want to delete this event?')) {
-                event.preventDefault(); // Prevents the default action (navigation to the delete URL)
+        document.addEventListener('DOMContentLoaded', function() {
+            let deleteButton = document.getElementById('delete-button');
+            let cancelButton = document.getElementById('cancel-button');
+    
+            if (deleteButton) {
+                deleteButton.addEventListener('click', function(event) {
+                    if (!confirm('Are you sure you want to delete this event?')) {
+                        event.preventDefault(); // Prevents the default action (navigation to the delete URL)
+                    }
+                });
+            }
+    
+            if (cancelButton) {
+                cancelButton.addEventListener('click', function(event) {
+                    if (!confirm('Are you sure you want to cancel your registration from this event?')) {
+                        event.preventDefault(); // Prevents the default action (navigation to the delete URL)
+                    }
+                });
             }
         });
     </script>
