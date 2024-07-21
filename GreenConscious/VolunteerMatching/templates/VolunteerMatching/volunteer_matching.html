@@ -7,6 +7,17 @@
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'MainPage/style.css' %}">
 <style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .form-section {
+        width: 45%;
+    }
+    .results-section {
+        width: 45%;
+    }
     .event-image {
         max-width: 100%;
         height: auto;
@@ -40,9 +51,6 @@
         <div class="name">Green Conscious</div>
     </a>
     <div class="login-register">
-        <a href="{% url 'Login_SignUp:profile_view' %}">
-            <button>My Profile</button>
-        </a>
         <a href="{% url 'MainPage:main_page' %}">
             <button>Home</button>
         </a>
@@ -51,17 +59,20 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="heading">Volunteer Matching</h1>
-    <main>
+    <div class="form-section">
+        <h1 class="heading">Volunteer Matching</h1>
         <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Match</button>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Match</button>
         </form>
-        <br>
+    </div>
+    <br>
+    <div class="results-section">
         {% if matched_events %}
         <h2>Matched Events</h2>
-        <ul>{% for event in matched_events %}
+        <ul>
+            {% for event in matched_events %}
             <li>
                 <h2><a href="{% url 'MainPage:event_detail' event.id %}">{{ event.name }}</a></h2>
                 <p><strong>Start Date:</strong> {{ event.start_date }}</p>
@@ -73,9 +84,9 @@
                     <img src="{{ event.image.url }}" alt="{{ event.name }}" class="event-image">
                 {% endif %}
             </li>
-        {% endfor %}</ul>
+            {% endfor %}
+        </ul>
         {% endif %}
-    </main>
-    <a href="{% url 'MainPage:main_page' %}" class="btn btn-primary back-button">Back to Main Page</a>
+    </div>
 </div>
 {% endblock %}
