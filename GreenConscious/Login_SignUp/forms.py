@@ -39,7 +39,7 @@ class profileForm(forms.Form):
     userCountry = forms.CharField(max_length=50, label="Country")
     userEventInterested = forms.ModelChoiceField(
         queryset=EventCategory.objects.all(),
-        label='Event Category',
+        label='Events Interested',
         widget= forms.Select(attrs={'style': 'width:95%; height:35px; border: 1px solid #ccc;border-radius: 4px;'})
     )
     userProfileImage = forms.ImageField(required=False,

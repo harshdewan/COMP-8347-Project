@@ -8,7 +8,7 @@ from MainPage.models import Event
 class EventRegistration(models.Model):
     # eventId = models.IntegerField()
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=100, blank=True, null=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',

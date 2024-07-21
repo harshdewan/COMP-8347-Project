@@ -8,7 +8,7 @@ class Event(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     description = models.TextField()
-    created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='event_images/', null=True, blank=True)  # New field for event image
     location = models.CharField(max_length=255, default='Windsor, ON')
     category = models.ForeignKey('EventCategory', on_delete=models.CASCADE, related_name='events', default=1)
