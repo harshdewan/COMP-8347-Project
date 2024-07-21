@@ -4,9 +4,13 @@
     Green Conscious - Signup
 {% endblock %}
 
-
 {% block body_content %}
 <body class="signup-body">
+    <div class="navbar-heading">
+        <a href="{% url 'MainPage:main_page' %}">
+            <div class="name">Green Conscious</div>
+        </a>
+    </div>
     <div class="container">
         <h2>Sign Up</h2>
         <form action="{% url 'Login_SignUp:signupPage' %}" method="POST">
