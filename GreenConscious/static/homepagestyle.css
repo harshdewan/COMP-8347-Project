@@ -27,3 +27,31 @@ body {
     background-color: #4caf50;
     color: #ffffff;
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.carousel-container {
+  position: relative;
+  height: 100vh; /* Initial height set to full viewport */
+  overflow: hidden; /* Prevent scrollbars */
+}
+
+.carousel-inner {
+  height: 100%;
+}
+
+.carousel-item {
+  height: 100%;
+}
+
+.carousel-item img {
+  object-fit: cover; /* Ensure images scale to fit container */
+}
+
+.text_navbar {
+    font-family: monospace, sans-serif;
+    font-weight: bolder;
+}
