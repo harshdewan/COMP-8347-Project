@@ -16,12 +16,36 @@ body {
 }
 
 
-.footer .col-md-4 {
+.footer {
     color: green;
     font-size: 18px;
+    font-family: "Eras Medium ITC", sans-serif !important;
     font-weight: bold;
 }
 
+.footer_content {
+    color: green;
+    font-size: 18px;
+    font-family: "Eras Medium ITC", sans-serif !important;
+    font-weight: bold;
+    margin-top: 15px !important;
+}
+
+.footer_title {
+    font-family: "Eras Medium ITC", sans-serif;
+    font-size: 33px !important;
+    font-weight: bolder;
+}
+
+.footer_sub_title {
+    font-family: "Eras Medium ITC", sans-serif;
+    font-size: 18px !important;
+    font-weight: bold;
+}
+
+footer {
+    background-color: #e6ffed;
+}
 
 .navbar .name {
     color: white;
@@ -50,6 +74,8 @@ body {
 .content {
     margin-top: 60px; /* Adjust this value based on the height of your navbar */
     padding: 20px;
+    font-family: "Eras Medium ITC", sans-serif !important;
+    font-weight: bold;
 }
 
 /* Event container styles */
