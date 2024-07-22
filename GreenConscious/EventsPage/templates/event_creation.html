@@ -23,8 +23,8 @@
 
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="content">
+    <div class="container-fluid background">
+        <div class="content event_create_form">
             <div class="heading">Event Creation</div>
             <form action="{% url 'EventsPage:event_creation' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
