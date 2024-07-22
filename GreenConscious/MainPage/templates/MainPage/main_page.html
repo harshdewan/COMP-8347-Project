@@ -155,7 +155,11 @@
             {% with event.created_by.userprofile.profileImage as profile_image %}
             <div class="event">
               <div class="event-header">
-                <img src="{{ profile_image.url }}" alt="{{ event.created_by.username }}" class="profile-img">
+                {% if profile_image %}
+                  <img src="{{ profile_image.url }}" alt="{{ event.created_by.username }}" class="profile-img">
+                {% else %}
+                  <img src="{% static 'default-profile.jpg' %}" alt="Default Profile" class="profile-img">
+                {% endif %}
                 <div class="event-info">
                   <div class="event-title">{{ event.created_by.username }}</div>
                   <div class="event-time">{{ event.start_date }}</div>
