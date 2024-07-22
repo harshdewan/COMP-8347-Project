@@ -55,6 +55,7 @@
         <h1 class="heading">Discussion</h1>
     </header>
     <main class="main">
+        {% if posts %}
         <h2>Posts:</h2>
         <ul class="post-list">
             {% for post in posts %}
@@ -74,6 +75,9 @@
                 </li>
             {% endfor %}
         </ul>
+        {% else %}
+            <p>No posts so far!</p>
+        {% endif %}
     </main>
 </div>
 {% endblock %}
