@@ -2,10 +2,16 @@
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
+    min-height: 70vh !important;
+    max-height: 100vh !important;
 }
 
 .background {
     background: url("../../static/images/event_creation_background.png");
+}
+
+.background_registration {
+    background: url("../../static/images/event_registration_background.png");
 }
 
 .event_create_form {
@@ -103,4 +109,16 @@ form {
 
 .errorlist li {
     margin: 0 !important;
+}
+
+.event_registration {
+    background-color: #f9f9f9;
+    /*border: 1px solid #ddd;*/
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 85px !important;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
 }

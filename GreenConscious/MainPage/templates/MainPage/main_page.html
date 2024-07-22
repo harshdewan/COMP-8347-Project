@@ -172,7 +172,7 @@
                   <div class="event-time">{{ event.start_date }}</div>
                 </div>
               </div>
-              <h2>{{ event.name }}</h2>
+              <a class="event_title" href="{% url 'MainPage:event_detail' event.id %}">{{ event.name }}</a>
               <p><strong>Description:</strong> {{ event.description }}</p>
               {% if event.image %}
                 <img src="{{ event.image.url }}" alt="{{ event.name }}">
