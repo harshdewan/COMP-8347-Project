@@ -96,3 +96,8 @@ body {
 .event strong {
     color: #333;
 }
+
+.text_navbar {
+    font-family: monospace, sans-serif;
+    font-weight: bolder;
+}
