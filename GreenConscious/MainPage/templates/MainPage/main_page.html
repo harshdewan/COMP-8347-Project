@@ -7,49 +7,69 @@
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'MainPage/style.css' %}">
 <style>
-* {
-  box-sizing: border-box;
-}
+  * {
+    box-sizing: border-box;
+  }
 
-/* Create two unequal columns that floats next to each other */
-.column {
-  float: left;
-  padding: 10px;
-  height: 300px; /* Should be removed. Only for demonstration */
-}
+  .container {
+    width: 100%;
+  }
 
-.left {
-  width: 25%;
-}
+  .left {
+    width: 25%;
+    padding: 10px;
+    background-color: #ffffff;
+    vertical-align: top; /* Align content to the top */
+    position: sticky;
+    top: 0;
+    height: fit-content; /* Ensure the column doesn't take the full height */
+  }
 
-.right {
-  width: 75%;
-}
+  .right {
+    width: 75%;
+    padding: 10px;
+    background-color: #ffffff;
+    vertical-align: top; /* Align content to the top */
+  }
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
+  .left .search_button {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px; /* Space between buttons */
+  }
 
-.no-events-message {
+  .no-events-message {
     text-align: center;
     margin-top: 20px;
     font-style: italic;
     color: #999;
-}
+  }
 
-.column {
-    margin: 20px;
-}
+  /* Styling for event list */
+  .event {
+    margin-bottom: 20px;
+  }
 
+  .event img {
+    max-width: 100%;
+    height: auto;
+  }
 
+  .pagination {
+    margin-top: 20px;
+  }
 
+  .pagination .step-links a {
+    margin: 0 5px;
+  }
+
+  .pagination .current {
+    margin: 0 5px;
+  }
 </style>
 {% endblock %}
 
-{% block navbar-content%}
+{% block navbar-content %}
     <a href="{% url 'MainPage:main_page' %}">
         <div class="name">Green Conscious</div>
     </a>
@@ -57,88 +77,82 @@
         <a href="{% url 'Login_SignUp:profile_view' %}">
             <button>My Profile</button>
         </a>
-         <a href="{% url 'Login_SignUp:logoutPage' %}">
+        <a href="{% url 'Login_SignUp:logoutPage' %}">
             <button>Log Out</button>
         </a>
     </div>
 {%  endblock %}
 
 {% block content %}
+<div class="container">
+  <table style="width: 100%; border-spacing: 20px;">
+    <tr>
+      <td class="left">
+        <button onclick="location.href='{% url 'EventsPage:event_creation' %}'" class="search_button text-center">Create Event</button>
+        <button onclick="location.href='{% url 'MainPage:main_page' %}'" class="search_button text-center">Upcoming Events</button>
+        <button onclick="location.href='{% url 'MainPage:past_events' %}'" class="search_button text-center">Past Events</button>
+        <button onclick="location.href='{% url 'volunteer_matching' %}'" class="search_button text-center">Find events you'd like</button>
+        <button onclick="location.href='{% url 'community_page' %}'" class="search_button text-center">Community</button>
+      </td>
 
-<div class="row">
-  <div class="column" style="background-color:#ffffff;">
-      <div class="row">
-          <button onclick="location.href='{% url 'EventsPage:event_creation' %}'" class="search_button text-center">Create Event</button>
-      </div>
-      <div class="row">
-    <button onclick="location.href='{% url 'MainPage:main_page' %}'" class="search_button text-center">Upcoming Events</button>
-      </div>
-      <div class="row">
-    <button onclick="location.href='{% url 'MainPage:past_events' %}'" class="search_button text-center">Past Events</button>
-      </div>
-      <div class="row">
-    <button onclick="location.href='{% url 'volunteer_matching' %}'" class="search_button text-center">Find events you'd like</button>
-      </div>
-      <div class="row">
-    <button onclick="location.href='{% url 'community_page' %}'" class="search_button text-center">Community</button>
-      </div>
-  </div>
+      <td class="right">
+        <form method="get" action="{% url 'MainPage:main_page' %}" class="search-form">
+          <input type="text" name="q" class="input_field"
+                 value="{% if query %}{{ query }}{% endif %}" title="Please enter Event Name or Date Mon. DD, YYYY"
+                 placeholder="Search to filter">
+          <select name="category" class="input_field">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+              <option value="{{ category.id }}"
+                      {% if selected_category == category.id %}
+                          selected
+                      {% endif %}>
+                {{ category.name }}
+              </option>
+            {% endfor %}
+          </select>
+          <button class="search_button text-center" type="submit">Search</button>
+        </form>
 
-  <div class="column" style="background-color:#ffffff;">
-<form method="get" action="{% url 'MainPage:main_page' %}" class="search-form">
-      <input type="text" name="q" class="input_field"
-             value="{% if query %}{{ query }}{% endif %}" title="Please enter Event Name or Date Mon. DD, YYYY"
-             placeholder="Search to filter">
-      <select name="category" class="input_field">
-        <option value="">All Categories</option>
-        {% for category in categories %}
-          <option value="{{ category.id }}"
-                  {% if selected_category == category.id %}
-                      selected
-                  {% endif %}>
-            {{ category.name }}
-          </option>
-        {% endfor %}
-      </select>
-      <button class="search_button text-center" type="submit">Search</button>
-    </form>
-    {% if events %}
-    {% for event in events %}
-      <div class="event">
-        <h2><a href="{% url 'MainPage:event_detail' event.id %}">{{ event.name }}</a></h2>
-        <p><strong>Start Date:</strong> {{ event.start_date }}</p>
-        <p><strong>End Date:</strong> {{ event.end_date }}</p>
-        <p><strong>Description:</strong> {{ event.description }}</p>
-        {% if event.image %}
-          <img src="{{ event.image.url }}" alt="{{ event.name }}">
+        {% if events %}
+          {% for event in events %}
+            <div class="event">
+              <h2><a href="{% url 'MainPage:event_detail' event.id %}">{{ event.name }}</a></h2>
+              <p><strong>Start Date:</strong> {{ event.start_date }}</p>
+              <p><strong>End Date:</strong> {{ event.end_date }}</p>
+              <p><strong>Description:</strong> {{ event.description }}</p>
+              {% if event.image %}
+                <img src="{{ event.image.url }}" alt="{{ event.name }}">
+              {% endif %}
+              <p><strong>Category:</strong> {{ event.category }}</p>
+              <p><strong>Location:</strong> {{ event.location }}</p>
+              <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
+            </div>
+          {% endfor %}
+
+          <!-- Pagination links -->
+          <div class="pagination">
+            <span class="step-links">
+              {% if events.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ events.previous_page_number }}">previous</a>
+              {% endif %}
+
+              <span class="current">
+                Page {{ events.number }} of {{ events.paginator.num_pages }}.
+              </span>
+
+              {% if events.has_next %}
+                <a href="?page={{ events.next_page_number }}">next</a>
+                <a href="?page={{ events.paginator.num_pages }}">last &raquo;</a>
+              {% endif %}
+            </span>
+          </div>
+        {% else %}
+          <p class="no-events-message">No events found.</p>
         {% endif %}
-        <p><strong>Category:</strong> {{ event.category }}</p>
-        <p><strong>Location:</strong> {{ event.location }}</p>
-        <p><strong>Created By:</strong> {{ event.created_by.username }}</p>
-      </div>
-    {% endfor %}
-
-    <!-- Pagination links -->
-    <div class="pagination">
-      <span class="step-links">
-        {% if events.has_previous %}
-          <a href="?page=1">&laquo; first</a>
-          <a href="?page={{ events.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-          Page {{ events.number }} of {{ events.paginator.num_pages }}.
-        </span>
-
-        {% if events.has_next %}
-          <a href="?page={{ events.next_page_number }}">next</a>
-          <a href="?page={{ events.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-      </span>
-    </div>
-      {% else %}
-        <p class="no-events-message">No events found.</p>
-    {% endif %}
-  </div>
+      </td>
+    </tr>
+  </table>
 </div>
 {% endblock %}
