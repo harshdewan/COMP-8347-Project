@@ -18,9 +18,10 @@
   .left {
     width: 25%;
     padding: 10px;
-    background-color: #ffffff;
+    background-color: transparent;
+    border-radius: 8px 0 0 8px;
     vertical-align: top; /* Align content to the top */
-    position: sticky;
+    /* position: sticky; */
     top: 0;
     height: fit-content; /* Ensure the column doesn't take the full height */
   }
@@ -28,7 +29,8 @@
   .right {
     width: 75%;
     padding: 10px;
-    background-color: #ffffff;
+    background-color: transparent;
+    border-radius: 0 8px 8px 0;
     vertical-align: top; /* Align content to the top */
   }
 
@@ -48,10 +50,10 @@
   /* Styling for event list */
   .event {
     margin-bottom: 20px;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     border-radius: 8px;
     padding: 15px;
-    background-color: #f9f9f9;
+    background-color: transparent;
   }
 
   .event-header {
@@ -102,6 +104,11 @@
   .pagination .current {
     margin: 0 5px;
   }
+
+  table {
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  }
 </style>
 {% endblock %}
 
@@ -120,7 +127,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container main">
   <table style="width: 100%; border-spacing: 20px;">
     <tr>
       <td class="left">
