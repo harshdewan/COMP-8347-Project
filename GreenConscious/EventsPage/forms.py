@@ -37,7 +37,6 @@ class EventCreationForm(forms.Form):
                                             empty_label=None,
                                             widget=forms.Select(attrs={'class': 'input_field'}))
 
-
     def clean(self):
         cleaned_data = super().clean()
         start_date = cleaned_data.get('start_date')

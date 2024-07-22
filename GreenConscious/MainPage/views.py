@@ -79,7 +79,8 @@ def event_detail(request, event_id):
     register_flag = is_creator or is_registered
 
     return render(request, 'MainPage/event_detail.html',
-                  {'event': event, 'disable_flag': disable_flag, 'register_flag': register_flag})
+                  {'event': event, 'disable_flag': disable_flag,
+                   'register_flag': register_flag, 'is_registered': is_registered})
 
 
 def past_events(request):
@@ -168,3 +169,24 @@ def event_delete(request, event_id):
     return render(request, 'MainPage/event_detail.html',
                   {'event': event, 'disable_flag': disable_flag})
 
+
+def cancel_registration(request, event_id):
+    if not request.user.is_authenticated:
+        return redirect('Login_SignUp:homePage')
+
+    event = get_object_or_404(Event, id=event_id)
+    registration = get_object_or_404(EventRegistration, event=event, user=request.user)
+
+    disable_flag = True
+    event_creator_user_id = event.created_by.id
+
+    if request.user.id == event_creator_user_id:
+        disable_flag = False
+
+    if request.method == 'POST':
+        registration.delete()
+        messages.success(request, "Event deleted successfully.")
+        return redirect('MainPage:main_page')
+
+    return render(request, 'MainPage/event_detail.html',
+                  {'event': event, 'disable_flag': disable_flag})

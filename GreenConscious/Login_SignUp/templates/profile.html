@@ -5,33 +5,39 @@
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
-    <link rel="stylesheet" type="text/css" href="../../static/profilestyle.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'profilestyle.css' %}">
     <style>
         .sidenav {
-          height: 40%;
+          height: 81%; /* Changed to full height */
           width: 300px;
           position: fixed;
           z-index: 1;
           top: 0;
           left: 0;
-          background-color: #81c784;
+          background-color: #ffffff;
           overflow-x: hidden;
           padding-top: 20px;
-          margin-top : 200px;
-          margin-left : 20px;
+          margin-left: 20px;
+            margin-top: 80px;
           border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Added box-shadow for better appearance */
         }
 
         .sidenav a {
+          display: block;
           padding: 15px;
           text-decoration: none;
-          font-size: 25px;
-          color: #555555;
-          display: block;
+          font-size: 16px; /* Adjusted font size to match main page */
+          color: #333; /* Adjusted text color to match main page */
+          margin-bottom: 10px; /* Added margin to space out buttons */
+          border-radius: 5px; /* Rounded corners for buttons */
+          background-color: #f9f9f9; /* Background color for buttons */
+          text-align: center; /* Center align text in buttons */
         }
 
         .sidenav a:hover {
-          color: #f1f1f1;
+          background-color: #4CAF50; /* Hover background color */
+          color: white; /* Hover text color */
         }
 
         .navbar-heading {
@@ -68,9 +74,9 @@
         </a>
     </div>
     <div class="sidenav">
-          <a href="{% url 'MainPage:main_page' %}">Home</a>
-          <a href="{% url 'MainPage:myevents' %}">My Events</a>
-          <a href="{% url 'Login_SignUp:change_password' %}">Change Password</a>
+        <a href="{% url 'MainPage:main_page' %}">Home</a>
+        <a href="{% url 'MainPage:myevents' %}">My Events</a>
+        <a href="{% url 'Login_SignUp:change_password' %}">Change Password</a>
         <a href="{% url 'Login_SignUp:logoutPage' %}">Logout</a>
     </div>
 
