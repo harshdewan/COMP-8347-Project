@@ -23,8 +23,8 @@
 {%  endblock %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="content">
+    <div class="container-fluid background_registration">
+        <div class="content event_registration">
             <div class="heading">Event Registration</div>
             <form action="{% url 'EventsPage:event_registration' event_id %}" method="post">
                 {% csrf_token %}

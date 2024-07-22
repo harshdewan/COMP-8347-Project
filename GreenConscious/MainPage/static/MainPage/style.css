@@ -156,6 +156,7 @@ h1 {
     margin: 0 !important;
 }
 
-.background {
-    background: url("../../../static/images/main_page_background.png") !important;
+.event_title {
+    font-weight: bolder;
+    font-size: 22px;
 }
