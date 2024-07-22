@@ -18,10 +18,11 @@ class EventCreationForm(forms.Form):
                                                                      'placeholder': 'Please enter event description'}))
     start_date = forms.DateField(required=True,
                                  label='Event Start Date',
-                                 widget=forms.SelectDateWidget(attrs={'class': 'dateTime_field'}), initial=datetime.date.today)
+                                 widget=forms.DateInput(attrs={'type': 'date', 'class': 'dateTime_field'}),
+                                 initial=datetime.date.today)
     end_date = forms.DateField(required=True,
                                label='Event End Date',
-                               widget=forms.SelectDateWidget(attrs={'class': 'dateTime_field', }))
+                               widget=forms.DateInput(attrs={'type': 'date', 'class': 'dateTime_field'}))
 
     image = forms.ImageField(required=False,
                              label='Event Image',
