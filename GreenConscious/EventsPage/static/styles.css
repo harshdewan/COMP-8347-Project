@@ -2,8 +2,6 @@
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    min-height: 70vh !important;
-    max-height: 100vh !important;
 }
 
 .background {
@@ -12,6 +10,8 @@
 
 .background_registration {
     background: url("../../static/images/event_registration_background.png");
+    min-height: 70vh !important;
+    max-height: 100vh !important;
 }
 
 .event_create_form {
