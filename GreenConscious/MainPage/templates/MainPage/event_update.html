@@ -30,7 +30,7 @@
                   enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button>Update My Event Details</button>
+                <button type="submit" class="btn back_button">Update My Event Details</button>
                 <a href="{% url 'MainPage:event_detail' event_id=given_event_id%}"
                    class="btn btn-primary back_button">Back to Event Details</a>
             </form>
