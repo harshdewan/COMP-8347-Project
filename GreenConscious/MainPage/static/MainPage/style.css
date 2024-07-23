@@ -169,7 +169,10 @@ h1 {
     padding: 0 20px 0 !important;
 }
 
-.background_event_details {
-    background: url("../../../static/images/event_registration_background.png");
-    min-height: 70vh !important;
+.myevent_heading {
+    color: #4CAF50;
+    font-family: "Eras Medium ITC", sans-serif;
+    font-size: 33px !important;
+    font-weight: bolder;
+    padding: 0 20px 0 0 !important;
 }
