@@ -55,3 +55,23 @@ html, body {
     font-family: monospace, sans-serif;
     font-weight: bolder;
 }
+
+.nav_button {
+    background-color: white !important;
+    color: #4CAF50 !important;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.nav_button:hover {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
