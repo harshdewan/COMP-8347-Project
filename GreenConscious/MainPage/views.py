@@ -143,11 +143,21 @@ def event_update(request, event_id):
 def myEvents(request):
     if not request.user.is_authenticated:
         return redirect('Login_SignUp:homePage')
-    eventsToDisplay = False
-    eventsCreated = Event.objects.all().filter(created_by=request.user)
-    eventsRegistered = EventRegistration.objects.all().filter(user=request.user)
-    eventsToDisplay = eventsCreated or eventsRegistered
-    return render(request, template_name='MainPage/myevents.html', context={'eventsToDisplay':eventsToDisplay, 'eventsCreated': eventsCreated, 'eventsRegistered':eventsRegistered})
+    display_type = request.GET.get('display', 'created')  # Default to 'created'
+
+    events_to_display = False
+
+    if display_type == 'registered':
+        events_registered = Event.objects.filter(eventregistration__user=request.user)
+        events_created = None
+    else:
+        events_created = Event.objects.all().filter(created_by=request.user)
+        events_registered = None
+
+    events_to_display = events_created or events_registered
+    return render(request, template_name='MainPage/myevents.html', context={'events_to_display': events_to_display,
+                                                                            'events_created': events_created,
+                                                                            'events_registered': events_registered})
 
 
 def event_delete(request, event_id):
