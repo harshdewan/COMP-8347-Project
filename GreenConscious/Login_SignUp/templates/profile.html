@@ -58,6 +58,22 @@
             font-weight: bold;
             text-decoration: none;
         }
+
+        .button {
+              display: inline-block;
+              padding: 10px 5px;
+              font-size: 14px;
+              color: white;
+              background-color: #4CAF50;
+              text-align: center;
+              text-decoration: none;
+              border-radius: 3px;
+              transition: background-color 0.3s;
+            }
+
+            .button:hover {
+              background-color: #45a049;
+            }
     </style>
 
 </head>
@@ -93,6 +109,7 @@
                 {% endif %}
 
             </div>
+        <a href="{% url 'user_history' %}" class="button">User History</a>
         </div>
         <div class="container2">
             <div class="profile-details">
