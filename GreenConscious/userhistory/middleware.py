@@ -1,34 +1,33 @@
 # userhistory/middleware.py
+from django.utils.deprecation import MiddlewareMixin
+from datetime import date
+from django.urls import resolve
+from .models import UserHistory
+from django.conf import settings
 
-import datetime
 
+class UserVisitMiddleware(MiddlewareMixin):
+    def process_request(self, request):
+        if request.user.is_authenticated:
+            # Exclude media and static paths
+            if request.path.startswith(settings.MEDIA_URL) or request.path.startswith(settings.STATIC_URL):
+                return
 
-class UserHistoryMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
+            # Get the current path
+            path = resolve(request.path_info).url_name
+            if path is None:
+                path = request.path_info
 
-    def __call__(self, request):
-        response = self.get_response(request)
-        return response
+            user = request.user
+            today = date.today()
 
-    def process_view(self, request, view_func, view_args, view_kwargs):
-        # Track user visits
-        session_key = 'user_history'
-        visit_time = datetime.datetime.now()
-
-        if session_key in request.session:
-            visit_count, last_visit = request.session[session_key]
-            if last_visit.date() == visit_time.date():
-                visit_count += 1
-            else:
-                visit_count = 1
-        else:
-            visit_count = 1
-
-        request.session[session_key] = (visit_count, visit_time)
-
-        # Optionally, you can log the visit in your database or perform other actions
-        # For example, logging the visit in a database:
-        # UserVisit.objects.create(user=request.user, visit_time=visit_time)
-
-        return None  # Return None to continue processing the request
+            # Check if there is already an entry for today and this path
+            history, created = UserHistory.objects.get_or_create(
+                user=user,
+                path=path,
+                date=today,
+                defaults={'visit_count': 1}  # Start with 1 for the first visit
+            )
+            if not created:
+                history.visit_count += 1
+                history.save()

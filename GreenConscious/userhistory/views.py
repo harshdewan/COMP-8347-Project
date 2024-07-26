@@ -1,21 +1,14 @@
-import datetime
+# userhistory/views.py
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import UserHistory
+from datetime import date
 
 
+@login_required
 def user_history(request):
-    visit_count = request.session.get('visit_count', 0)
-    last_visit = request.session.get('last_visit')
-
-    # Update visit count and last visit time
-    visit_count += 1
-    last_visit_time = datetime.datetime.now()
-
-    # Store last visit time as ISO formatted string in session
-    request.session['visit_count'] = visit_count
-    request.session['last_visit'] = last_visit_time.isoformat()
-
+    visit_history = UserHistory.objects.filter(user=request.user, date=date.today()).order_by('-visit_count')
     context = {
-        'visit_count': visit_count,
-        'last_visit': last_visit_time.strftime('%Y-%m-%d %H:%M:%S') if last_visit_time else 'Never'
+        'visit_history': visit_history,
     }
     return render(request, 'history.html', context)
